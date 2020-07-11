@@ -43,7 +43,7 @@ function Project({ personManualAPIReturn, name }) {
   );
 }
 
-Project.getInitialProps = async function (context) {
+export async function getServerSideProps(context) {
   const { name } = context.query;
   const apiURL = `${process.env.REACT_APP_API}/PersonManual`
   
@@ -51,7 +51,7 @@ Project.getInitialProps = async function (context) {
 
   const personManualAPIReturn = await res.json();
 
-  return { personManualAPIReturn, name };
+  return { props: {personManualAPIReturn, name} };
 };
 
 export default Project;

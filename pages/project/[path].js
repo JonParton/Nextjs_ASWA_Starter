@@ -74,14 +74,14 @@ function Project({ project, path }) {
   );
 }
 
-Project.getInitialProps = async function (context) {
+export async function getServerSideProps(context) {
   const { path } = context.query;
   const projectData = projects.find(project => project.slug === path);
   const ghPath = projectData.path;
   
   const res = await fetch(`https://api.github.com/repos/${ghPath}`);
   const project = await res.json();
-  return { project, path };
+  return { props: {project, path} };
 };
 
 export default Project;
