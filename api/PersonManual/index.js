@@ -1,7 +1,7 @@
 
 module.exports = async function (context, req) {
 
-    const manualsData = require("./manualsData.json")
+    const manualsData = require("../utils/manualsData.json")
 
     context.log('JavaScript HTTP trigger function processed a request.');
 

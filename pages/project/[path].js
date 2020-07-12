@@ -74,14 +74,29 @@ function Project({ project, path }) {
   );
 }
 
-export async function getServerSideProps(context) {
-  const { path } = context.query;
-  const projectData = projects.find(project => project.slug === path);
+export async function getStaticProps({params}) {
+
+  const projectsData = require("../../utils/projectsData")
+  const projectData = projectsData.projects.find(project => project.slug === params.path);
   const ghPath = projectData.path;
+  const path = params.path
   
   const res = await fetch(`https://api.github.com/repos/${ghPath}`);
   const project = await res.json();
   return { props: {project, path} };
 };
+
+// This function gets called at build time
+export async function getStaticPaths() {
+  // Call an external API endpoint to get posts
+  const projectsData = require("../../utils/projectsData")
+
+  // Get the paths we want to pre-render based on posts
+  const paths = projectsData.projects.map((project) => ({params: { path: project.slug}}))
+
+  // We'll pre-render only these paths at build time.
+  // { fallback: false } means other routes should 404.
+  return { paths, fallback: false }
+}
 
 export default Project;
