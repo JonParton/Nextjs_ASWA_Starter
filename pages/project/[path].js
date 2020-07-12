@@ -88,14 +88,17 @@ export async function getStaticProps({params}) {
 
 // This function gets called at build time
 export async function getStaticPaths() {
-  // Call an external API endpoint to get posts
+  // Get hold of the list of all possible Dynamic Routes we want to render. 
+  // This could be a file in code (as below) or an external API (Not one of 
+  // this projects Azure Functions)
   const projectsData = require("../../utils/projectsData")
 
-  // Get the paths we want to pre-render based on posts
+  // Get the paths we want to pre-render the data returned. 
   const paths = projectsData.projects.map((project) => ({params: { path: project.slug}}))
 
   // We'll pre-render only these paths at build time.
-  // { fallback: false } means other routes should 404.
+  // { fallback: false } means other routes should 404. 
+  // If we had a server we can do progressive pre rendering where new routes are rendered and stored!
   return { paths, fallback: false }
 }
 
