@@ -4,44 +4,67 @@ This starter template / example was created based on the [Microsoft Documentatio
 
 - It never actually gave an example of using Azure Functions as a back end API.
   - From doing this previously I knew there were a few GOTCHA's in here that would get me (and others!) that were trying to get going with this. So I wanted to solve them and put them out in the community.
-  - I also wanted to give an example of doing Client Side rendering using these API's and show how you can make this work with the `next export` that you need to run for ASWA's (I couldn't get Next to work using a Server like you can with Create React App as in `next start` mode it doesn't seem to create an index.html anywhere that ASWA's need to be in the artifact folder at the moment!)
-- It used some outdated methods to do pre-rendering and the more modern exports of `getStaticProps` and `getStaticPaths` are nicer.
-- The version of Next.js being used was out of date and didn't allow the use of things like Exposed Environmental Variables on the front end (The `NEXT_PUBLIC` prefix).
+  - I also wanted to give an example of doing pre rendering using [Static Generation](https://nextjs.org/docs/advanced-features/static-html-export) that ASWA's require you to do (`next export`) while still utilising these API's.
+- It used some outdated methods to define the pre-rendering and the more modern exports of `getStaticProps` and `getStaticPaths` are nicer.
+- The version of Next.js being used was out of date and didn't allow the use of things like Exposed Environmental Variables on the front end (The `NEXT_PUBLIC` prefix) which is essential to make the API's work in all environments!
 - I wanted to fix various other issues like out of date references that would stop us being immediately productive!
 
-With all of those things added this starter should allow you to pick this up and get creating your own Next.js Azure Static Web App in no time!
+With all of those things added this starter should allow you to pick this up and get creating your own Next.js Azure Static Web App in no time! (A few 🔋🔋🔋's included!)
 
 ## Notes from the author
 
 I'm only at the start of my React / Next.js journey so I'm sure there are loads of things that could be improved here, especially how I have done some of the react pages! Please raise issues or drop me a note to suggest improvements here - I won't be offended!
 
+## Dependencies
+
+For the instruction below to work you need to have these dependencies installed on your machine:
+
+- [Git installed](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) with your [Username and Email set up](https://linuxize.com/post/how-to-configure-git-username-and-email/) (Preferably the same as GitHub!)
+- [Node installed](https://nodejs.org/en/download/) using the latest LTS version.
+- [Yarn installed](https://classic.yarnpkg.com/en/docs/install/)
+- [VS Code Insiders](https://code.visualstudio.com/insiders/) Version (Not required but easiest!)
+  - The Insiders version is required for the Azure Static Web Apps Extension to work! I've had 0 issues using the insiders version vs the stable.
+  - Install the [Azure Static Web Apps Extension](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-azurestaticwebapps)!
+
 ## Getting Started
 
-As this is a template / starter it's not meant to be cloned but instead it is best to download the source as a .zip and then initiate your own Git Source control in the folder when it is saved in the location you would like to work with it:
+As this is a template / starter it's not meant to be cloned but instead it is best to download the source as a .zip and then push it to a new repository you create on GitHub.
 
-- Download and extract a zip of the main branch. To do this hit the down arrow on the green "Code" button top right of the Code Tab.
-- In that folder run:
+- Create a blank repositry in github, either public or private and copy the git URL given.
 
-```bash
-git init
-git add .
-git commit -m "Initial Commit of Next.js Azure Static Web App"
+- Using a terminal in your projects folder (Powershell, CMD etc) do a git clone:
+  - *I find Git plays nicer if you do a clone rather then commiting to a blank repo from the command line. It allows the setup from Github to be downloaded ensureing things like creating new branches and pushing them is painless!*
+
+```git
+git clone <[YOUR_REPO_URL_HERE]>
 ```
 
-- Push this Repo to GitHub to a new project of your choice (Required for steps below!)
-- Make sure you have the [Azure Static Web App Extension](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-azurestaticwebapps) Installed in VS Code (At time of writing you will need to be using Visual Studio Code Insiders to install this). You will also need a GitHub account and and an active Azure Subscription (There are lots of options to get free credit each month and ASWA's are free at the moment too!)
-- In the ASWA Extension, login to Azure and GitHub then click to create a new Azure Static Web App.
-Work through the guided steps making sure you use the following as answers for the specified questions:
+- Download a zip of the branch of your choice. To do this hit the down arrow on the green "Code" button top right of the Code Tab.
+- Export the folder into the Blank repo we cloned above.
+- Push this,newly popualted Repo to GitHub with a suitable git comment such as `Initial Commit of Next.js ASWAs starter"`
+- Using the [Azure Static Web App Extension](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-azurestaticwebapps) login to Azure and GitHub then click to create a new Azure Static Web App.Work through the guided steps making sure you use the following as answers for the specified questions:
 
 | Root Folder   | API Location  | App Artifact Location           |
 | ---  | --- | --- |
 | `/`           | `api`         | `out`                           |
 
+- Azure will then push a .github folder to your GitHub reposiroty so make sure you do a `git pull`.
 - Once this is done you should have a .github folder with the Github Workflow that will automate all of our deployments to Azure 🔥🔥🏃‍♂️🏃‍♂️.
 - Replace the README.md file with your own.
-- Add a local.settings.json to your API folder to fix CORS locally (GOTCHA explained below)
+- Add a local.settings.json to your API folder to fix CORS locally (**GOTCHA** explained below)
 
 Commits to the Main Branch will now publish your project straight to Azure and if you create a feature branch with a Pull Request it will even create a Staging Version for you to test and let you know where it is (Awesome!).
+
+## Starting a Local Development Server
+
+The repo is set up to use Yarn so to start a local development server use
+
+```cmd
+yarn install
+yarn dev
+```
+
+You will also need to start the Azure Function API's if you are using them. If you are using VSCode (Reccomended!) do this by opening the debug pane in VS code and hit play on the attach to Node. You can also do `ctrl-shift-p` and use the `Debug:` commands or just hit `F5`.
 
 ## Gotchas to look out for
 
@@ -67,13 +90,21 @@ an example:
 
 ### Getting CORS to work locally
 
-By default React will not be able to use Fetch on the Local azure functions as they are on a completely different port (Effectively site). You need to tell the Azure Functions to allow CORS when in development. To do this add the below to ``local.settings.json`` of each api.
+By default React will not be able to use Fetch on the Local azure functions as they are on a completely different port (Effectively site). You need to tell the Azure Functions to allow CORS when in development. To do this add the below to ``local.settings.json`` of within the api Folder.
 
+`api\local.settings.json`
 ```json
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "",
+    "FUNCTIONS_WORKER_RUNTIME": "node"
+  },
   "Host": {
     "LocalHttpPort": 7071,
     "CORS": "*"
   }
+}
 ```
 
 ### Dynamic Paths
@@ -120,7 +151,3 @@ export default Project;
 ```
 
 Some things to note - You unfortunately can't call out to one of your own API's that are defined as an Azure Function to figure out all the possible routes here. Unfortunately these pre-rendered pages are created at Build Time on Github and I don't belive it spins up the azure functions and it wouldn't have any databases etc you need defined! You can however call to external API's and also read the files in the repo. So for things like Blogs or some CMS Data managed in the Repo you can still do this like the above!
-
-### Getting Azure Function Runtime installed on Windows
-
-Manually install [Chocolatey](https://chocolatey.org/docs/installation) (I used Power Shell), Make sure that you Manually install [Node](https://phoenixnap.com/kb/install-node-js-npm-on-windows) (LTS Version) and allow it to run the extra chocolatey scripts, add Node to your [Path Registry variable](https://stackoverflow.com/questions/30318628/the-term-node-is-not-recognized-in-powershell), then install the azure functions run time with [npm or chocolatey](https://www.npmjs.com/package/azure-functions-core-tools).
