@@ -1,6 +1,6 @@
 # Next JS Static App on Azure Static Web Apps (ASWA's)
 
-This starter template / example was created based on the [Microsoft Documentation](https://docs.microsoft.com/en-us/azure/static-web-apps/deploy-nextjs). At the time of writing the Microsoft Docs had quite a few issues I wanted to address before I could use and share it.
+This starter template / example was created based on the [Microsoft Documentation](https://docs.microsoft.com/en-us/azure/static-web-apps/deploy-nextjs). At the time of writing the Microsoft Docs had quite a few issues I wanted to address before I could use and share it to others.
 
 - It never actually gave an example of using Azure Functions as a back end API.
   - From doing this previously I knew there were a few GOTCHA's in here that would get me (and others!) that were trying to get going with this. So I wanted to solve them and put them out in the community.
