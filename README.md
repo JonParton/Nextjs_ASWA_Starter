@@ -51,7 +51,7 @@ git clone YOUR_REPO_URL_HERE
 - Azure will then push a .github folder to your GitHub repository so make sure you do a `git pull`.
 - Once this is done you should have a .github folder with the Github Workflow that will automate all of our deployments to Azure 🔥🔥🏃‍♂️🏃‍♂️.
 - Replace the README.md file with your own.
-- Add a `local.settings.json` to your API folder to fix CORS locally ([**GOTCHA** explained below](#getting-cors-to-work-locally))
+- Check you have the `local.settings.json` file in your API folder to fix CORS locally ([**GOTCHA** explained below](#getting-cors-to-work-locally)). All being well (🤞) if you downloaded this from the Release section this will already be included, However it is listed in the gitignore so just double check.
 
 Commits to the Main Branch will now publish your project straight to Azure and if you create a feature branch with a Pull Request it will even create a Staging Version for you to test and let you know where it is (Awesome!).
 
