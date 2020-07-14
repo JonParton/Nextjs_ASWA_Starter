@@ -74,14 +74,32 @@ function Project({ project, path }) {
   );
 }
 
-Project.getInitialProps = async function (context) {
-  const { path } = context.query;
-  const projectData = projects.find(project => project.slug === path);
+export async function getStaticProps({params}) {
+
+  const projectsData = require("../../utils/projectsData")
+  const projectData = projectsData.projects.find(project => project.slug === params.path);
   const ghPath = projectData.path;
+  const path = params.path
   
   const res = await fetch(`https://api.github.com/repos/${ghPath}`);
   const project = await res.json();
-  return { project, path };
+  return { props: {project, path} };
 };
+
+// This function gets called at build time
+export async function getStaticPaths() {
+  // Get hold of the list of all possible Dynamic Routes we want to render. 
+  // This could be a file in code (as below) or an external API (Not one of 
+  // this projects Azure Functions)
+  const projectsData = require("../../utils/projectsData")
+
+  // Get the paths we want to pre-render the data returned. 
+  const paths = projectsData.projects.map((project) => ({params: { path: project.slug}}))
+
+  // We'll pre-render only these paths at build time.
+  // { fallback: false } means other routes should 404. 
+  // If we had a server we can do progressive pre rendering where new routes are rendered and stored!
+  return { paths, fallback: false }
+}
 
 export default Project;

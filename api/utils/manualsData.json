@@ -1,0 +1,14 @@
+[
+  {
+    "id": "1",
+    "name": "Jon",
+    "description": "A hairy and 'unique' individual who enjoys a huge mix of activites.",
+    "answerToTheMeaningOfLife":"Who cares just live it!"
+  },
+  {
+    "id": "2",
+    "name": "Anna",
+    "description": "A lovely and capable lady who has a few cat like tendencies, a big brain and an insatiable desire to read!.",
+    "answerToTheMeaningOfLife":"42!"
+  }
+]

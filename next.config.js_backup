@@ -1,0 +1,29 @@
+const data = require('./utils/projectsData')
+const manualsData = require("./api/PersonManual/manualsData.json")
+
+module.exports = {
+  exportTrailingSlash: true,
+  
+  exportPathMap: async function () {
+    const { projects } = data
+    const paths = {
+      '/': { page: '/' }
+    }
+
+    // manualsData.forEach((manual) => {
+    //   paths[`/InstructionManual/${manual.name}`] = {
+    //     page: '/InstructionManual/[name]',
+    //     query: {name: manual.name}
+    //   }
+    // })
+
+    // projects.forEach((project) => {
+    //   paths[`/project/${project.slug}`] = {
+    //     page: '/project/[path]',
+    //     query: { path: project.slug }
+    //   }
+    // })
+
+    return paths
+  }
+}
