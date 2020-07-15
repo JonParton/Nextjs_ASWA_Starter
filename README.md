@@ -8,6 +8,7 @@ This starter template / example was created based on the [Microsoft Documentatio
 - It used some outdated methods to define the pre rendering and the more modern exports of `getStaticProps` and `getStaticPaths` are nicer.
 - The version of Next.js being used was out of date and didn't allow the use of things like Exposed Environmental Variables on the front end (The `NEXT_PUBLIC` prefix) which is essential to make the API's work in all environments!
 - I wanted to fix various other issues like out of date references that would stop us being immediately productive!
+- I wanted to switch the code across to use Typescript so we could make use of the better static error catching!
 
 With all of those things added this starter should allow you to get started with your own Next.js Azure Static Web App in no time! (A few 🔋🔋🔋's included!)
 
