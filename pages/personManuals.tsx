@@ -1,12 +1,24 @@
 import fetch from "isomorphic-unfetch";
 import { useState, useEffect } from "react";
 
+export interface PersonManualAPIReturn {
+  numberOfRecords: number;
+  manuals:         Manual[];
+}
+
+export interface Manual {
+  id:                       string;
+  name:                     string;
+  description:              string;
+  answerToTheMeaningOfLife: string;
+}
+
 function personManuals({}) {
   // Set up React Hooks
-  const [personManualAPIReturn, setPersonManualAPIReturn] = useState();
+  const [personManualAPIReturn, setPersonManualAPIReturn] = useState<PersonManualAPIReturn>();
   const [manualIsLoading, setManualIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const [personManualsAPIReturn, setPersonManualsAPIReturn] = useState();
+  const [personManualsAPIReturn, setPersonManualsAPIReturn] = useState<PersonManualAPIReturn>();
   const [personManualsIsLoading, setPersonManualsIsLoading] = useState(false);
 
   // When the page loads get available manuals from the server. 
@@ -16,7 +28,7 @@ function personManuals({}) {
 
   async function getPersonManuals() {
     setPersonManualsIsLoading(true);
-    const apiURL = `${process.env.NEXT_PUBLIC_API}/PersonManuals`;
+    const apiURL = `${process.env.NEXT_PUBLIC_API}/PersonManual`;
 
     setErrorMessage("");
 
@@ -51,7 +63,7 @@ function personManuals({}) {
     );
   } else if (
     personManualsAPIReturn !== undefined &&
-    personManualsAPIReturn.manualsExist
+    personManualsAPIReturn.numberOfRecords > 0
   ) {
     console.log(personManualsAPIReturn);
     leftNavItems = (
@@ -114,7 +126,7 @@ function personManuals({}) {
 
   // Some style sugar for our error title.
   // TODO: This should be in CSS!
-  const errorStyle = {
+  const errorStyle:React.CSSProperties = {
     color:'red',
     fontWeight:'bold'
   }
@@ -132,9 +144,9 @@ function personManuals({}) {
     );
   } else if (
     personManualAPIReturn !== undefined &&
-    personManualAPIReturn.manualExists
+    personManualAPIReturn.numberOfRecords == 1
   ) {
-    CardReturn = personManualAPIReturn.manual.map((manual) => {
+    CardReturn = personManualAPIReturn.manuals.map((manual) => {
       return (
         <div className="card-big">
           <h1>{manual.name}</h1>
