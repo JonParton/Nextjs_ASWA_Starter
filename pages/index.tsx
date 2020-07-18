@@ -119,7 +119,7 @@ function Home() {
                 <Typography variant="body2" component="p" gutterBottom>
                 An example of pre-rendered pages which could be useful for things like blogs or slowly changing data such as tournament results.
                 </Typography>
-                <Typography variant="body2" component="p" className={classes.cardLastText}>
+                <Typography variant="body2" component="p">
                   To illustrate this click below to see an example of a simple
                   about page.
                 </Typography>
