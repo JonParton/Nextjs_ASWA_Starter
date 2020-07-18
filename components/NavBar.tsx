@@ -15,7 +15,8 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     flexGrow: 1,
-  },
+    textTransform: "none",
+  }
 }));
 
 export default function ButtonAppBar() {
