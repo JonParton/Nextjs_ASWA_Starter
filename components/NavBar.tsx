@@ -1,6 +1,15 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { AppBar, Toolbar, Typography, Button, Box, Hidden, Tooltip } from "@material-ui/core";
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  Button,
+  Box,
+  Hidden,
+  Tooltip,
+  Link,
+} from "@material-ui/core";
 import GitHubIcon from "@material-ui/icons/GitHub";
 import NextLink from "next/link";
 
@@ -12,9 +21,9 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     textTransform: "none",
   },
-  tooltip:  {
-    fontSize:"20px",
-  }
+  tooltip: {
+    fontSize: "20px",
+  },
 }));
 
 export default function ButtonAppBar() {
@@ -31,17 +40,28 @@ export default function ButtonAppBar() {
               </Typography>
             </Button>
           </NextLink>
-          <Tooltip title="See the code on GitHub" aria-label="See the code on GitHub" classes={{tooltip: classes.tooltip}}>
-          <Button component="span" startIcon={<GitHubIcon />} color="inherit">
-            <Box display={{ xs: "none", sm: "block" }}>
-              
-                <Typography variant="h6" className={classes.title}>
-                  See the code on GitHub
-                </Typography>
-            </Box>
-          </Button>
+          <Tooltip
+            title="See the code on GitHub"
+            aria-label="See the code on GitHub"
+            classes={{ tooltip: classes.tooltip }}
+          >
+            <Link
+              href="https://github.com/JonParton/Nextjs_ASWS_Starter"
+              color="inherit"
+            >
+              <Button
+                component="span"
+                startIcon={<GitHubIcon />}
+                color="inherit"
+              >
+                <Box display={{ xs: "none", sm: "block" }}>
+                  <Typography variant="h6" className={classes.title}>
+                    See the code on GitHub
+                  </Typography>
+                </Box>
+              </Button>
+            </Link>
           </Tooltip>
-
         </Toolbar>
       </AppBar>
     </div>

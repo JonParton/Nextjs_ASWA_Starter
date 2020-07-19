@@ -1,16 +1,12 @@
-import SmallCard from "../components/SmallCard";
-import { projectIcons } from "../components/Icons";
 import {
   Grid,
   Typography,
-  Button,
   Paper,
   makeStyles,
-  Card,
-  CardContent,
-  CardActions,
 } from "@material-ui/core";
+import Alert from '@material-ui/lab/Alert';
 import NavBar from "../components/NavBar";
+import IndexCard from "../components/IndexCard";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -20,21 +16,6 @@ const useStyles = makeStyles((theme) => ({
   topGrid: {
     marginTop: theme.spacing(3),
   },
-  cardRoot: {
-    //minWidth: 275,
-    height:"100%",
-    display:"flex",
-    flexDirection:"column",
-  },
-  pos: {
-    marginBottom: 12,
-  },
-  cardImage:{
-    height:"100px",
-  },
-  flexGrow:{
-    flexGrow:1,
-  }
 }));
 
 function Home() {
@@ -66,106 +47,44 @@ function Home() {
                 this example site shows you a few ways this can be handled on
                 Azure Static Web Apps (ASWA's).
               </Typography>
-              <Typography variant="body1" color="textSecondary">
-                Please Note - Because Azure Static Web Apps can only serve static pages and do not run a server, you cannot do Server Side Rendering on user request, Just pre-rendering at build time!
-              </Typography>
+              <br />
+              <Alert severity="info" >
+                <Typography variant="body1" color="textSecondary">
+                  Azure Static Web Apps doesn't run a server at run time because of this it can only serve static pages which were pre-rendered at build time!
+                </Typography>
+              </Alert>
             </Paper>
           </Grid>
           {/* Card 1 */}
-          <Grid item xs={12} sm={4}>
-            <Card className={classes.cardRoot} elevation={10}>
-              <CardContent className={classes.flexGrow}>
-                <Typography variant="h5" component="h2">
-                  Fully Static Page
-                </Typography>
-                <Typography className={classes.pos} color="textSecondary">
-                  Just like plain HTML but with the power of React!
-                </Typography>
-                <Typography variant="body2" component="p" gutterBottom>
-                  You can create a page using all the power of react such as the
-                  extensive libraries available, map functions and extracting
-                  HTML out into custom components etc. however Next.js will pre
-                  render the page for you as a static HTML page at build time
-                  and serve it up super quick from the server!
-                </Typography>
-                <Typography variant="body2" component="p">
-                  To illustrate this click below to see an example of a simple
-                  about page.
-                </Typography>
-              </CardContent>
-              <CardActions>
-                <Button
-                  size="medium"
-                  variant="contained"
-                  fullWidth
-                  color="primary"
-                  
-                >
-                  Learn More
-                </Button>
-              </CardActions>
-            </Card>
-          </Grid>
+          <IndexCard 
+            title="Fully Static Page"
+            subTitle="Just like plain HTML but with the power of React!"
+            description={`You can create a page using all the power of react such as the
+              extensive libraries available, map functions and extracting
+              HTML out into custom components etc. However Next.js will pre
+              render the page for you at build time
+              and serve it up super quick from the server!`}
+            exampleLink="/about"
+          />
           {/* Card 2 */}
-          <Grid item xs={12} sm={4}>
-            <Card className={classes.cardRoot} elevation={10}>
-              <CardContent className={classes.flexGrow}>
-                <Typography variant="h5" component="h2">
-                  Dynamic Route, Sever Rendered
-                </Typography>
-                <Typography className={classes.pos} color="textSecondary">
-                  One page template, Many Server Rendered Pages
-                </Typography>
-                <Typography variant="body2" component="p" gutterBottom>
-                An example of pre-rendered pages which could be useful for things like blogs or slowly changing data such as tournament results.
-                </Typography>
-                <Typography variant="body2" component="p">
-                  To illustrate this click below to see an example of a simple
-                  about page.
-                </Typography>
-              </CardContent>
-              <CardActions>
-                <Button
-                  size="medium"
-                  variant="contained"
-                  fullWidth
-                  color="primary"
-                >
-                  Learn More
-                </Button>
-              </CardActions>
-            </Card>
-          </Grid>
+          <IndexCard 
+            title="Dynamic Route, Sever Rendered"
+            subTitle="One page template, Many Server Rendered Pages"
+            description={`If you would like to create many pages from a set of data that you know 
+              at build time you can use Next.js's dynamic routing along with Static Props to pre-render 
+              each page at build time. This could be useful for things like Blog posts or tournament results 
+              where you want each page to have its own URL and data doesn't change often. `}
+            exampleLink="/project/projects"
+
+          />
           {/* Card 3 */}
-          <Grid item xs={12} sm={4}>
-            <Card className={classes.cardRoot} elevation={10}>
-              <CardContent className={classes.flexGrow}>
-                <Typography variant="h5" component="h2">
-                  SSR Frame, CSR Content!
-                </Typography>
-                <Typography className={classes.pos} color="textSecondary">
-                  Let Next.js render the frame on the server then load content dynamically on the client side. 
-                </Typography>
-                <Typography variant="body2" component="p" gutterBottom>
-                An example of client side rendered content served up by azure functions. This is how to interact with server side code from a "static" page.
-                </Typography>
-                <Typography variant="body2" component="p">
-                  To illustrate this click below to see an example of a simple
-                  about page.
-                </Typography>
-              </CardContent>
-              <CardActions>
-                <Button
-                  size="medium"
-                  variant="contained"
-                  fullWidth
-                  color="primary"
-                >
-                  Learn More
-                </Button>
-              </CardActions>
-            </Card>
-          </Grid>
+          <IndexCard 
+            title="SSR Frame, CSR Content!"
+            subTitle="Let Next.js render the frame on the server then load content dynamically on the client side."
+            description={`An example of client side rendered content served up by azure functions. This is how to interact with server side code from a "static" page.`}
+            exampleLink="/personManuals"
+
+          />
         </Grid>
         <Grid xs={false} sm={2} item className="Gutter"></Grid>
       </Grid>
