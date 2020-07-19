@@ -8,7 +8,11 @@ This starter template / example was created based on the [Microsoft Documentatio
 - It used some outdated methods to define the pre rendering and the more modern exports of `getStaticProps` and `getStaticPaths` are nicer.
 - The version of Next.js being used was out of date and didn't allow the use of things like Exposed Environmental Variables on the front end (The `NEXT_PUBLIC` prefix) which is essential to make the API's work in all environments!
 - I wanted to fix various other issues like out of date references that would stop us being immediately productive!
-- I wanted to switch the code across to use Typescript so we could make use of the better static error catching!
+
+I then got a bit carried away and added in other extras that should help you be more productive!
+
+- I wanted to switch the code across to use Typescript so we could make use of the better static error catching! (Strict mode not currently enabled)
+- I added Material UI to style the Example Web Page and fixed a few issues related to using MUI with Next.js.
 
 With all of those things added this starter should allow you to get started with your own Next.js Azure Static Web App in no time! (A few 🔋🔋🔋's included!)
 
@@ -153,3 +157,82 @@ export default Project;
 ```
 
 One thing to note with this is that, unfortunately, you can't call out to an API you have defined as an Azure Function in this project within these methods. These pre-rendered pages are created at Build Time on Github and I don't believe it spins up the azure functions during this build and besides they may not be set up in the pipeline environment with things like databases you have defined! You can however call to external API's and also read the files in the repo. So for things like Blogs or some data you are managing in the Repo you can still do this like the above!
+
+## Some Other Gotchas Solved by using this starter (IE don't worry about them!)
+
+<details>
+  <summary>Click to expand!</summary>
+
+### Material UI Hot Reloading when using makeStyles
+
+I was finding that if you use `makeStyles` the standard way of extending the styling MUI components hot reload during development was causing the page to loose all the styles applied.
+
+This is caused by a conflict between the original styles generated on the Server side and then styles that get updated during hot reload on the client side (CSR). To solve this you need to add some extra code to the `_app.tsx` file and the `_document.tsx file`.
+
+```tsx
+// pages/_app.tsx
+
+//inside the default MyApp component
+
+  React.useEffect(() => {
+    // Remove the server-side injected CSS.
+    const jssStyles = document.querySelector('#jss-server-side');
+    if (jssStyles) {
+      jssStyles.parentElement.removeChild(jssStyles);
+    }
+  }, []);
+
+```
+
+```tsx
+// pages/_document.tsx
+
+// As part of the _document module
+// `getInitialProps` belongs to `_document` (instead of `_app`),
+// it's compatible with server-side generation (SSG).
+MyDocument.getInitialProps = async (ctx) => {
+  // Resolution order
+  //
+  // On the server:
+  // 1. app.getInitialProps
+  // 2. page.getInitialProps
+  // 3. document.getInitialProps
+  // 4. app.render
+  // 5. page.render
+  // 6. document.render
+  //
+  // On the server with error:
+  // 1. document.getInitialProps
+  // 2. app.render
+  // 3. page.render
+  // 4. document.render
+  //
+  // On the client
+  // 1. app.getInitialProps
+  // 2. page.getInitialProps
+  // 3. app.render
+  // 4. page.render
+
+  // Render app and page and get the context of the page with collected side effects.
+  const sheets = new ServerStyleSheets();
+  const originalRenderPage = ctx.renderPage;
+
+  ctx.renderPage = () =>
+    originalRenderPage({
+      enhanceApp: (App) => (props) => sheets.collect(<App {...props} />),
+    });
+
+  const initialProps = await Document.getInitialProps(ctx);
+
+  return {
+    ...initialProps,
+    // Styles fragment is rendered after the app and page rendering finish.
+    styles: [...React.Children.toArray(initialProps.styles), sheets.getStyleElement()],
+  };
+};
+
+```
+
+Thank you to [this post](https://stackoverflow.com/questions/50685175/react-material-ui-warning-prop-classname-did-not-match) for putting me on to the answer of this one!
+
+</details>

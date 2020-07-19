@@ -1,3 +1,25 @@
+.staticMain {
+  padding: 8px;
+}
+
+
+.polaroid {
+  width: 450px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  text-align: center;
+  margin:20px;
+}
+
+.polaroid img {
+  width: 100%;
+}
+
+.polaroidLabel {
+  padding: 10px;
+}
+
+/* Delete the below once MaterialUI restyling complete! */
+
 * {
   box-sizing: border-box;
 }

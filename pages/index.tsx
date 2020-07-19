@@ -1,3 +1,4 @@
+import React from 'react';
 import {
   Grid,
   Typography,
@@ -22,91 +23,68 @@ function Home() {
   const classes = useStyles();
 
   return (
-    <Grid container direction="column">
-      <Grid>
-        <NavBar></NavBar>
-      </Grid>
-      <Grid container direction="row" className={classes.topGrid}>
-        <Grid xs={false} sm={2} item className="Gutter"></Grid>
-        <Grid
-          xs={12}
-          sm={8}
-          item
-          container
-          direction="row"
-          className={classes.root}
-          spacing={2}
-        >
-          <Grid item xs={12}>
-            <Paper elevation={10} className={classes.paper}>
-              <Typography variant="h4" gutterBottom>
-                Next.js Azure Static Web App Page Examples
-              </Typography>
-              <Typography variant="body1" gutterBottom>
-                There are a few different ways to handle pages in Next.js and
-                this example site shows you a few ways this can be handled on
-                Azure Static Web Apps (ASWA's).
-              </Typography>
-              <br />
-              <Alert severity="info" >
-                <Typography variant="body1" color="textSecondary">
-                  Azure Static Web Apps doesn't run a server at run time because of this it can only serve static pages which were pre-rendered at build time!
+        <Grid container direction="row">
+          <Grid xs={false} sm={2} item className="Gutter"></Grid>
+          <Grid
+            xs={12}
+            sm={8}
+            item
+            container
+            direction="row"
+            className={classes.root}
+            spacing={2}
+          >
+            <Grid item xs={12}>
+              <Paper elevation={10} className={classes.paper}>
+                <Typography variant="h4" gutterBottom>
+                  Next.js Azure Static Web App Page Examples
                 </Typography>
-              </Alert>
-            </Paper>
+                <Typography variant="body1" gutterBottom>
+                  There are a few different ways to handle pages in Next.js and
+                  this example site shows you a few ways this can be handled on
+                  Azure Static Web Apps (ASWA's).
+                </Typography>
+                <br />
+                <Alert severity="info" >
+                  <Typography variant="body1" color="textSecondary">
+                    Azure Static Web Apps don't use a server at run time; because of this it can only serve static pages which were pre-rendered at build time!
+                  </Typography>
+                </Alert>
+              </Paper>
+            </Grid>
+            {/* Card 1 */}
+            <IndexCard 
+              title="Fully Static Page"
+              subTitle="Just like plain HTML but with the power of React!"
+              description={`You can create a page using all the power of react such as the
+                extensive libraries available, map functions and extracting
+                HTML out into custom components etc. However Next.js will pre
+                render the page for you at build time
+                and serve it up super quick from the server!`}
+              exampleLink="/staticPageExample"
+            />
+            {/* Card 2 */}
+            <IndexCard 
+              title="Dynamic Route, Sever Rendered"
+              subTitle="One page template, Many Server Rendered Pages"
+              description={`If you would like to create many pages from a set of data that you know 
+                at build time you can use Next.js's dynamic routing along with Static Props to pre-render 
+                each page at build time. This could be useful for things like Blog posts or tournament results 
+                where you want each page to have its own URL and data doesn't change often. `}
+              exampleLink="/project/projects"
+  
+            />
+            {/* Card 3 */}
+            <IndexCard 
+              title="SSR Frame, CSR Content!"
+              subTitle="Let Next.js render the frame on the server then load content dynamically on the client side."
+              description={`An example of client side rendered content served up by azure functions. This is how to interact with server side code from a "static" page.`}
+              exampleLink="/personManuals"
+  
+            />
           </Grid>
-          {/* Card 1 */}
-          <IndexCard 
-            title="Fully Static Page"
-            subTitle="Just like plain HTML but with the power of React!"
-            description={`You can create a page using all the power of react such as the
-              extensive libraries available, map functions and extracting
-              HTML out into custom components etc. However Next.js will pre
-              render the page for you at build time
-              and serve it up super quick from the server!`}
-            exampleLink="/about"
-          />
-          {/* Card 2 */}
-          <IndexCard 
-            title="Dynamic Route, Sever Rendered"
-            subTitle="One page template, Many Server Rendered Pages"
-            description={`If you would like to create many pages from a set of data that you know 
-              at build time you can use Next.js's dynamic routing along with Static Props to pre-render 
-              each page at build time. This could be useful for things like Blog posts or tournament results 
-              where you want each page to have its own URL and data doesn't change often. `}
-            exampleLink="/project/projects"
-
-          />
-          {/* Card 3 */}
-          <IndexCard 
-            title="SSR Frame, CSR Content!"
-            subTitle="Let Next.js render the frame on the server then load content dynamically on the client side."
-            description={`An example of client side rendered content served up by azure functions. This is how to interact with server side code from a "static" page.`}
-            exampleLink="/personManuals"
-
-          />
+          <Grid xs={false} sm={2} item className="Gutter"></Grid>
         </Grid>
-        <Grid xs={false} sm={2} item className="Gutter"></Grid>
-      </Grid>
-    </Grid>
-
-    // <div className="home">
-    //   <h1>Splash Screen</h1>
-    //   <div className="card-grid">
-    //     <a className="card-small" href={`/personManuals`}>
-    //       <h3>People Instruction Manuals</h3>
-    //       <p>An example of client side rendered content served up by azure functions. This is how to interact with server side code from a "static" page.</p>
-    //     </a>
-    //     <a className="card-small" href={`/project/projects`}>
-    //       <h3>Projects</h3>
-    //       <p>An example of pre-rendered pages which could be useful for things like blogs or slowly changing data such as tournament results.</p>
-    //     </a>
-    //     <a className="card-small" href={`/about`}>
-    //       <h3>About</h3>
-    //       <p>An example of a completely static page with that is pre rendered and server super fast bu the Azure Static Web App</p>
-    //     </a>
-    //   </div>
-    // </div>
   );
 }
 export default Home;
