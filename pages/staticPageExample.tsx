@@ -58,7 +58,7 @@ const staticPageExample = () => (
           react JSX / TSX compliant.
         </Typography>
         <Typography variant="body1" color="textPrimary" paragraph>
-          You can also use React to .map from an array to do repetitive HTML
+          You can also use React to .map() from an array to do repetitive HTML
           templates such as the below.
         </Typography>
         <Grid
@@ -87,7 +87,7 @@ const staticPageExample = () => (
           ))}
         </Grid>
         <Typography variant="body1" color="textPrimary" paragraph>
-          The above is some Card code mapped from a simple value array.
+          The above a singular block of Card code that has been mapped from a simple value array.
         </Typography>
       </Paper>
     </Grid>

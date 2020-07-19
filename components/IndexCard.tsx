@@ -8,6 +8,7 @@ import {
   Card,
   CardContent,
   CardActions,
+  CardMedia,
 } from "@material-ui/core";
 import NextLink from "next/link";
 
@@ -25,14 +26,21 @@ const useStyles = makeStyles((theme) => ({
   flexGrow: {
     flexGrow: 1,
   },
+  media: {
+    height: 270,
+  },
 }));
 
-export default function IndexCard({title, subTitle, description, exampleLink}) {
+export default function IndexCard({title, subTitle, description, exampleLink,imageURL}) {
 
   const classes = useStyles();
   return (
     <Grid item sm={12} md={4}>
       <Card className={classes.cardRoot} elevation={10}>
+        <CardMedia
+          className={classes.media}
+          image={imageURL}
+        />
         <CardContent className={classes.flexGrow}>
           <Typography variant="h5" component="h2">
             {title}
