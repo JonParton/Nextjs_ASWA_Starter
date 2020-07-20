@@ -124,6 +124,7 @@ function Project({ project, path }) {
                 variant="contained"
                 color="primary"
                 style={{ backgroundColor: "#393939" }}
+                href={project.html_url}
               >
                 Learn more...
               </Button>
