@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "cross-env NODE_OPTIONS='--inspect' next",
     "build": "next build && next export",
     "start": "next start"
   },
@@ -12,6 +12,7 @@
     "@material-ui/icons": "^4.9.1",
     "@material-ui/lab": "^4.0.0-alpha.56",
     "clsx": "^1.1.1",
+    "cross-env": "^7.0.2",
     "isomorphic-unfetch": "^3.0.0",
     "next": "9.4.4",
     "react": "16.13.1",
