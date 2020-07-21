@@ -1,30 +1,107 @@
 import fetch from "isomorphic-unfetch";
 import { useState, useEffect } from "react";
+import {
+  Grid,
+  makeStyles,
+  Theme,
+  createStyles,
+  IconButton,
+  Toolbar,
+  Typography,
+  Paper,
+  Box,
+  Avatar,
+  Divider,
+  Hidden,
+  Button,
+  SwipeableDrawer,
+  List,
+  ListItem,
+  ListItemAvatar,
+  ListItemText,
+} from "@material-ui/core";
+import { Skeleton } from "@material-ui/lab";
+import MenuIcon from "@material-ui/icons/Menu";
+import ArrowBackIcon from "@material-ui/icons/ArrowBack";
+import ListIcon from '@material-ui/icons/List';
+import NextLink from "next/link";
 
 export interface PersonManualAPIReturn {
   numberOfRecords: number;
-  manuals:         Manual[];
+  manuals: Manual[];
 }
 
 export interface Manual {
-  id:                       string;
-  name:                     string;
-  description:              string;
+  id: string;
+  name: string;
+  description: string;
   answerToTheMeaningOfLife: string;
 }
 
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      display: "flex",
+    },
+    menuButton: {
+      marginRight: theme.spacing(2),
+      [theme.breakpoints.up("sm")]: {
+        display: "none",
+      },
+    },
+    ManualsListPaper: {
+      width: "100%",
+      padding: theme.spacing(3),
+    },
+    ManualsList: {
+      width: "250px",
+    },
+    MainManual: {
+      padding: theme.spacing(3),
+      width: "100%",
+      minHeight:"500px",
+    },
+    MobileManualsMenu: {
+      padding: theme.spacing(3),
+      width: "100%",
+    },
+  })
+);
+
 function personManuals({}) {
+  const classes = useStyles();
+
   // Set up React Hooks
-  const [personManualAPIReturn, setPersonManualAPIReturn] = useState<PersonManualAPIReturn>();
+  const [personManualAPIReturn, setPersonManualAPIReturn] = useState<
+    PersonManualAPIReturn
+  >();
   const [manualIsLoading, setManualIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const [personManualsAPIReturn, setPersonManualsAPIReturn] = useState<PersonManualAPIReturn>();
+  const [personManualsAPIReturn, setPersonManualsAPIReturn] = useState<
+    PersonManualAPIReturn
+  >();
   const [personManualsIsLoading, setPersonManualsIsLoading] = useState(false);
 
-  // When the page loads get available manuals from the server. 
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const toggleDrawer = (open: boolean) => (
+    event: React.KeyboardEvent | React.MouseEvent
+  ) => {
+    if (
+      event &&
+      event.type === "keydown" &&
+      ((event as React.KeyboardEvent).key === "Tab" ||
+        (event as React.KeyboardEvent).key === "Shift")
+    ) {
+      return;
+    }
+
+    setMobileMenuOpen(open);
+  };
+
+  // When the page loads get available manuals from the server.
   useEffect(() => {
-    getPersonManuals()
-  },[])
+    getPersonManuals();
+  }, []);
 
   async function getPersonManuals() {
     setPersonManualsIsLoading(true);
@@ -54,29 +131,27 @@ function personManuals({}) {
     }
     setPersonManualsIsLoading(false);
   }
-  var leftNavItems; 
+  var leftNavItems;
   if (personManualsIsLoading) {
     leftNavItems = (
-    <ul>
-      <li>Loading....</li>
-    </ul>
+      <ul>
+        <li>Loading....</li>
+      </ul>
     );
   } else if (
     personManualsAPIReturn !== undefined &&
     personManualsAPIReturn.numberOfRecords > 0
   ) {
-    console.log(personManualsAPIReturn);
     leftNavItems = (
       <ul>
-        {
-          personManualsAPIReturn.manuals.map((manual) => {
+        {personManualsAPIReturn.manuals.map((manual) => {
           return (
-              <li key={manual.id}>
+            <li key={manual.id}>
               <a href="#" onClick={() => getManualForPerson(`${manual.name}`)}>
-              {manual.name}
+                {manual.name}
               </a>
-          </li>
-            );
+            </li>
+          );
         })}
         <li>
           <a href="/">Home</a>
@@ -84,7 +159,6 @@ function personManuals({}) {
       </ul>
     );
   } else {
-    console.log(personManualAPIReturn);
     leftNavItems = (
       <ul>
         <li>No Manuals from the API...</li>
@@ -126,12 +200,12 @@ function personManuals({}) {
 
   // Some style sugar for our error title.
   // TODO: This should be in CSS!
-  const errorStyle:React.CSSProperties = {
-    color:'red',
-    fontWeight:'bold'
-  }
+  const errorStyle: React.CSSProperties = {
+    color: "red",
+    fontWeight: "bold",
+  };
 
-  // Work out what we should display in the Manual Card. 
+  // Work out what we should display in the Manual Card.
   var CardReturn;
   if (manualIsLoading) {
     CardReturn = <p>Loading....</p>;
@@ -155,19 +229,96 @@ function personManuals({}) {
       );
     });
   } else {
-    console.log(personManualAPIReturn);
     CardReturn = <div>Please Select a user on the left hand side.</div>;
   }
 
+  const ManualsList = () => (
+      <List className={classes.ManualsList}>
+        {[...Array(4)].map((i) => {
+          return (
+            <ListItem  key={i} >
+                <ListItemAvatar >
+                  <Skeleton
+                    height="45px"
+                    width="45px"
+                    variant="circle"
+                  ></Skeleton>
+                </ListItemAvatar>
+                <ListItemText>
+                  <Skeleton height="75px" />
+                </ListItemText>
+              <Divider light />
+            </ListItem>
+          );
+        })}
+      </List>
+    );
+
   // Return the whole page setup.
   return (
-    <div className="project">
-      <aside>
-        <h3>Testing!!...</h3>
-        {leftNavItems}
-      </aside>
-      <main>{CardReturn}</main>
-    </div>
+    <Grid container direction="column" spacing={1}>
+      <Grid item container>
+
+        <Hidden smUp>
+          <Paper className={classes.MobileManualsMenu}>
+            <Button variant="outlined" onClick={toggleDrawer(true)} startIcon={<ListIcon />}>Select Manual</Button>
+            <SwipeableDrawer
+              anchor="left"
+              open={mobileMenuOpen}
+              onClose={toggleDrawer(false)}
+              onOpen={toggleDrawer(true)}
+            >
+              <ManualsList />
+            </SwipeableDrawer>
+          </Paper>
+        </Hidden>
+      </Grid>
+      <Grid item container direction="row" spacing={3}>
+        <Grid xs={false} sm={2} item>
+          <Hidden xsDown>
+            <Paper className={classes.ManualsListPaper} elevation={5}>
+              <ManualsList />
+            </Paper>
+          </Hidden>
+          {/* Manuals List */}
+        </Grid>
+        <Grid
+          xs={12}
+          sm={8}
+          item
+          container
+          direction="row"
+          // className={classes.root}
+        >
+          <Paper elevation={5} className={classes.MainManual}>
+            <NextLink href="/" passHref>
+              <Button
+                variant="outlined"
+                color="default"
+                startIcon={<ArrowBackIcon />}
+                size="medium"
+                style={{ marginBottom: "20px" }}
+              >
+                Back to index
+              </Button>
+            </NextLink>
+            {/* Manual Big Card */}
+            <Box height="100%" width="100%" display="flex" alignItems="center">
+              <Skeleton component="div" width="100%" height="100%"></Skeleton>
+            </Box>
+          </Paper>
+        </Grid>
+        <Grid xs={false} sm={2} item className="Gutter"></Grid>
+      </Grid>
+    </Grid>
+
+    // <div className="project">
+    //   <aside>
+    //     <h3>Testing!!...</h3>
+    //     {leftNavItems}
+    //   </aside>
+    //   <main>{CardReturn}</main>
+    // </div>
   );
 }
 
