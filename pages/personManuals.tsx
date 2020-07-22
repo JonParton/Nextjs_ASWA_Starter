@@ -1,4 +1,5 @@
 import fetch from "isomorphic-unfetch";
+import { useQuery } from 'react-query'
 import { useState, useEffect } from "react";
 import {
   Grid,
@@ -19,12 +20,14 @@ import {
   ListItem,
   ListItemAvatar,
   ListItemText,
+  Link,
 } from "@material-ui/core";
 import { Skeleton } from "@material-ui/lab";
 import MenuIcon from "@material-ui/icons/Menu";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import ListIcon from '@material-ui/icons/List';
 import NextLink from "next/link";
+import React from "react";
 
 export interface PersonManualAPIReturn {
   numberOfRecords: number;
@@ -36,6 +39,7 @@ export interface Manual {
   name: string;
   description: string;
   answerToTheMeaningOfLife: string;
+  AvatarURL:string;
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -65,11 +69,22 @@ const useStyles = makeStyles((theme: Theme) =>
       padding: theme.spacing(3),
       width: "100%",
     },
+    MobileSideBar:  {
+      padding: theme.spacing(3),
+    }
   })
 );
 
+function getPersonManuals() {
+  const apiURL = `${process.env.NEXT_PUBLIC_API}/PersonManual`;
+  return fetch(`${apiURL}`).then((res) => res.json())
+}
+
 function personManuals({}) {
   const classes = useStyles();
+
+  // React-Queries (Server Sate!)
+  const PersonManualsQuery = useQuery('manuals', getPersonManuals)
 
   // Set up React Hooks
   const [personManualAPIReturn, setPersonManualAPIReturn] = useState<
@@ -77,10 +92,7 @@ function personManuals({}) {
   >();
   const [manualIsLoading, setManualIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const [personManualsAPIReturn, setPersonManualsAPIReturn] = useState<
-    PersonManualAPIReturn
-  >();
-  const [personManualsIsLoading, setPersonManualsIsLoading] = useState(false);
+
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const toggleDrawer = (open: boolean) => (
@@ -98,76 +110,68 @@ function personManuals({}) {
     setMobileMenuOpen(open);
   };
 
-  // When the page loads get available manuals from the server.
-  useEffect(() => {
-    getPersonManuals();
-  }, []);
-
-  async function getPersonManuals() {
-    setPersonManualsIsLoading(true);
-    const apiURL = `${process.env.NEXT_PUBLIC_API}/PersonManual`;
-
-    setErrorMessage("");
-
-    const res = await fetch(`${apiURL}`).catch((error) => {
-      console.log("API Errored:");
-      console.log(error);
-      setErrorMessage(
-        "We got an error trying to call the API to get person manuals ... Are the Azure Functions running?"
-      );
-    });
-    if (errorMessage.length == 0) {
-      if (res && res.ok) {
-        let apiFuncReturn = await res.json();
-        setPersonManualsAPIReturn(apiFuncReturn);
-        setErrorMessage("");
-      } else {
-        console.log("Error from the get manuals Azure Function:");
-        console.log(res);
-        setErrorMessage(
-          "We got an error back from the get person manuals Azure Function. Check the Console. "
+  var ManualsItems;
+  if (PersonManualsQuery.isLoading) {
+    ManualsItems = (
+      <React.Fragment>
+      {[...Array(4)].map((i) => {
+        return (
+          <ListItem  key={i} >
+              <ListItemAvatar >
+                <Skeleton
+                  height="45px"
+                  width="45px"
+                  variant="circle"
+                ></Skeleton>
+              </ListItemAvatar>
+              <ListItemText>
+                <Skeleton height="75px" />
+              </ListItemText>
+            <Divider light />
+          </ListItem>
+          
         );
-      }
-    }
-    setPersonManualsIsLoading(false);
+      })}
+      </React.Fragment>
+    );
+  } else if (PersonManualsQuery.isError) {
+    ManualsItems = (
+      <ListItem>
+        We got an Error from the API. The error was {PersonManualsQuery.error.message}
+      </ListItem>
+    )
+  } else  {
+    var personManualsAPIReturn:PersonManualAPIReturn = PersonManualsQuery.data
+    if (
+      personManualsAPIReturn !== undefined &&
+      personManualsAPIReturn.numberOfRecords > 0
+    ) {
+      ManualsItems = (
+        <React.Fragment>
+          <Typography variant="h5" color="primary" gutterBottom>Available Manuals:</Typography>
+          {personManualsAPIReturn.manuals.map((manual) => {
+            return (
+              <React.Fragment>
+              <ListItem key={manual.id} button component="a" href="#" onClick={() => getManualForPerson(`${manual.name}`)}>
+              <ListItemAvatar>
+                <Avatar src={manual.AvatarURL} />
+              </ListItemAvatar>
+                <ListItemText primary={manual.name} />
+              </ListItem>
+              <Divider light />
+              </React.Fragment>
+            );
+          })}
+        </React.Fragment>
+      );
+    } else {
+      ManualsItems = (
+        <React.Fragment>
+          <ListItem>No Manuals from the API...</ListItem>
+        </React.Fragment>
+      );
   }
-  var leftNavItems;
-  if (personManualsIsLoading) {
-    leftNavItems = (
-      <ul>
-        <li>Loading....</li>
-      </ul>
-    );
-  } else if (
-    personManualsAPIReturn !== undefined &&
-    personManualsAPIReturn.numberOfRecords > 0
-  ) {
-    leftNavItems = (
-      <ul>
-        {personManualsAPIReturn.manuals.map((manual) => {
-          return (
-            <li key={manual.id}>
-              <a href="#" onClick={() => getManualForPerson(`${manual.name}`)}>
-                {manual.name}
-              </a>
-            </li>
-          );
-        })}
-        <li>
-          <a href="/">Home</a>
-        </li>
-      </ul>
-    );
-  } else {
-    leftNavItems = (
-      <ul>
-        <li>No Manuals from the API...</li>
-        <li>
-          <a href="/">Home</a>
-        </li>
-      </ul>
-    );
-  }
+}
 
   async function getManualForPerson(name) {
     setManualIsLoading(true);
@@ -234,23 +238,7 @@ function personManuals({}) {
 
   const ManualsList = () => (
       <List className={classes.ManualsList}>
-        {[...Array(4)].map((i) => {
-          return (
-            <ListItem  key={i} >
-                <ListItemAvatar >
-                  <Skeleton
-                    height="45px"
-                    width="45px"
-                    variant="circle"
-                  ></Skeleton>
-                </ListItemAvatar>
-                <ListItemText>
-                  <Skeleton height="75px" />
-                </ListItemText>
-              <Divider light />
-            </ListItem>
-          );
-        })}
+        {ManualsItems}
       </List>
     );
 
@@ -259,7 +247,7 @@ function personManuals({}) {
     <Grid container direction="column" spacing={1}>
       <Grid item container>
 
-        <Hidden smUp>
+        <Hidden mdUp>
           <Paper className={classes.MobileManualsMenu}>
             <Button variant="outlined" onClick={toggleDrawer(true)} startIcon={<ListIcon />}>Select Manual</Button>
             <SwipeableDrawer
@@ -268,14 +256,17 @@ function personManuals({}) {
               onClose={toggleDrawer(false)}
               onOpen={toggleDrawer(true)}
             >
-              <ManualsList />
+              
+              <Box className={classes.MobileSideBar}>
+                <ManualsList />
+              </Box>
             </SwipeableDrawer>
           </Paper>
         </Hidden>
       </Grid>
       <Grid item container direction="row" spacing={3}>
         <Grid xs={false} sm={2} item>
-          <Hidden xsDown>
+          <Hidden smDown>
             <Paper className={classes.ManualsListPaper} elevation={5}>
               <ManualsList />
             </Paper>

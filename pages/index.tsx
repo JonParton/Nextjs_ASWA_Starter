@@ -55,7 +55,7 @@ function Home() {
         </Grid>
         {/* Card 1 */}
         <IndexCard
-          title="Fully Static Page"
+          title="Fully Static Page (SSG)"
           subTitle="Just like plain HTML but with the power of React!"
           description={`You can create a page using all the power of react such as the
                 extensive libraries available, map functions and extracting
@@ -67,7 +67,7 @@ function Home() {
         />
         {/* Card 2 */}
         <IndexCard
-          title="Dynamic Route, Sever Rendered"
+          title="Dynamic Route, Sever Rendered (SSR)"
           subTitle="One page template, Many Server Rendered Pages"
           description={`If you would like to create many pages from a set of data that you know 
                 at build time you can use Next.js's dynamic routing along with Static Props to pre-render 
