@@ -1,5 +1,5 @@
 import fetch from "isomorphic-unfetch";
-import { useQuery } from 'react-query'
+import { useQuery } from "react-query";
 import { useState, useEffect } from "react";
 import {
   Grid,
@@ -25,9 +25,15 @@ import {
 import { Skeleton } from "@material-ui/lab";
 import MenuIcon from "@material-ui/icons/Menu";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
-import ListIcon from '@material-ui/icons/List';
+import BackspaceIcon from "@material-ui/icons/Backspace";
+import ListIcon from "@material-ui/icons/List";
 import NextLink from "next/link";
 import React from "react";
+import { useRouter } from "next/router";
+import { currentManualNameState } from "../state/atoms";
+import { useRecoilState } from "recoil";
+import { usePersonManuals, usePersonManual } from "../state/ReactQueryHooks";
+import { useSnackbar } from "notistack";
 
 export interface PersonManualAPIReturn {
   numberOfRecords: number;
@@ -39,7 +45,7 @@ export interface Manual {
   name: string;
   description: string;
   answerToTheMeaningOfLife: string;
-  AvatarURL:string;
+  AvatarURL: string;
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -63,37 +69,44 @@ const useStyles = makeStyles((theme: Theme) =>
     MainManual: {
       padding: theme.spacing(3),
       width: "100%",
-      minHeight:"500px",
+      minHeight: "500px",
     },
     MobileManualsMenu: {
       padding: theme.spacing(3),
       width: "100%",
     },
-    MobileSideBar:  {
+    MobileSideBar: {
       padding: theme.spacing(3),
-    }
+    },
+    errorStyle: {
+      color: "red",
+      fontWeight: "bold",
+    },
   })
 );
 
-function getPersonManuals() {
-  const apiURL = `${process.env.NEXT_PUBLIC_API}/PersonManual`;
-  return fetch(`${apiURL}`).then((res) => res.json())
-}
-
 function personManuals({}) {
   const classes = useStyles();
+  const router = useRouter();
+  const { enqueueSnackbar } = useSnackbar();
+  const [currentManualName, setCurrentManualName] = useRecoilState(
+    currentManualNameState
+  );
+
+  // On load or when the Query string changes make sure we set our states.
+  useEffect(() => {
+    if (router.query && router.query.manual) {
+      let manualString: string = router.query.manual as string;
+      setCurrentManualName(manualString);
+    } else {
+      setCurrentManualName("");
+    }
+  }, [router]);
 
   // React-Queries (Server Sate!)
-  const PersonManualsQuery = useQuery('manuals', getPersonManuals)
+  const PersonManualsQuery = usePersonManuals();
 
   // Set up React Hooks
-  const [personManualAPIReturn, setPersonManualAPIReturn] = useState<
-    PersonManualAPIReturn
-  >();
-  const [manualIsLoading, setManualIsLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
-
-
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const toggleDrawer = (open: boolean) => (
     event: React.KeyboardEvent | React.MouseEvent
@@ -114,10 +127,10 @@ function personManuals({}) {
   if (PersonManualsQuery.isLoading) {
     ManualsItems = (
       <React.Fragment>
-      {[...Array(4)].map((i) => {
-        return (
-          <ListItem  key={i} >
-              <ListItemAvatar >
+        {[1, 2, 3, 4].map((i) => {
+          return (
+            <ListItem key={i}>
+              <ListItemAvatar>
                 <Skeleton
                   height="45px"
                   width="45px"
@@ -127,38 +140,63 @@ function personManuals({}) {
               <ListItemText>
                 <Skeleton height="75px" />
               </ListItemText>
-            <Divider light />
-          </ListItem>
-          
-        );
-      })}
+              <Divider light />
+            </ListItem>
+          );
+        })}
       </React.Fragment>
     );
   } else if (PersonManualsQuery.isError) {
     ManualsItems = (
       <ListItem>
-        We got an Error from the API. The error was {PersonManualsQuery.error.message}
+        We got an Error from the API. The error was{" "}
+        {PersonManualsQuery.error.message}
       </ListItem>
-    )
-  } else  {
-    var personManualsAPIReturn:PersonManualAPIReturn = PersonManualsQuery.data
+    );
+  } else {
+    var personManualsAPIReturn: PersonManualAPIReturn = PersonManualsQuery.data;
     if (
       personManualsAPIReturn !== undefined &&
       personManualsAPIReturn.numberOfRecords > 0
     ) {
       ManualsItems = (
         <React.Fragment>
-          <Typography variant="h5" color="primary" gutterBottom>Available Manuals:</Typography>
+          <Typography key="title" variant="h5" color="primary" gutterBottom>
+            Available Manuals:
+          </Typography>
+          <Button
+            variant="contained"
+            color="primary"
+            startIcon={<BackspaceIcon />}
+            onClick={() => {
+              router.push(`/personManuals`, undefined, { shallow: true });
+            }}
+            disabled={currentManualName.length == 0 ? true : false}
+          >
+            Clear Selection
+          </Button>
           {personManualsAPIReturn.manuals.map((manual) => {
             return (
-              <React.Fragment>
-              <ListItem key={manual.id} button component="a" href="#" onClick={() => getManualForPerson(`${manual.name}`)}>
-              <ListItemAvatar>
-                <Avatar src={manual.AvatarURL} />
-              </ListItemAvatar>
-                <ListItemText primary={manual.name} />
-              </ListItem>
-              <Divider light />
+              <React.Fragment key={manual.id}>
+                <ListItem
+                  button
+                  component="a"
+                  href="#"
+                  onClick={() => {
+                    router.push(
+                      `/personManuals?manual=${manual.name}`,
+                      undefined,
+                      { shallow: true }
+                    );
+                    setMobileMenuOpen(false);
+                  }}
+                >
+                  <ListItemAvatar>
+                    <Avatar src={manual.AvatarURL} />
+                  </ListItemAvatar>
+                  <ListItemText primary={manual.name} />
+                </ListItem>
+                <Divider light />
               </React.Fragment>
             );
           })}
@@ -170,93 +208,89 @@ function personManuals({}) {
           <ListItem>No Manuals from the API...</ListItem>
         </React.Fragment>
       );
-  }
-}
-
-  async function getManualForPerson(name) {
-    setManualIsLoading(true);
-    const apiURL = `${process.env.NEXT_PUBLIC_API}/PersonManual`;
-
-    setErrorMessage("");
-
-    const res = await fetch(`${apiURL}?name=${name}`).catch((error) => {
-      console.log("API Errored:");
-      console.log(error);
-      setErrorMessage(
-        "We got an error trying to call the get person manual API ... Are the Azure Functions running?"
-      );
-    });
-    if (errorMessage.length == 0) {
-      if (res && res.ok) {
-        let apiFuncReturn = await res.json();
-        setPersonManualAPIReturn(apiFuncReturn);
-        setErrorMessage("");
-      } else {
-        console.log("Error from the Azure Function:");
-        console.log(res);
-        setErrorMessage(
-          "We got an error back from the get person manual Azure Function. Check the Console. "
-        );
-      }
     }
-    setManualIsLoading(false);
   }
-
-  // Some style sugar for our error title.
-  // TODO: This should be in CSS!
-  const errorStyle: React.CSSProperties = {
-    color: "red",
-    fontWeight: "bold",
-  };
+  const personManualQuery = usePersonManual(currentManualName);
 
   // Work out what we should display in the Manual Card.
   var CardReturn;
-  if (manualIsLoading) {
-    CardReturn = <p>Loading....</p>;
-  } else if (errorMessage.length > 0) {
+  if (currentManualName.length == 0) {
     CardReturn = (
-      <div>
-        <p style={errorStyle}>Error:</p>
-        <p>{errorMessage}</p>
-      </div>
+      <Box>
+        <Typography variant="h4" gutterBottom>
+          Server Rendered Frame, Client Rendered Content
+        </Typography>
+        <Typography variant="body1" paragraph>
+          This page has loaded with a server rendered frame but it will
+          dynamically load in data when you ask it to.{" "}
+        </Typography>
+        <Typography variant="body1" paragraph>
+          In fact it has probably already loaded a menu with available manuals
+          person manuals to view.{" "}
+        </Typography>
+        <Typography variant="body1" paragraph>
+          Select one of them from the menu to see CSR in action.{" "}
+        </Typography>
+      </Box>
+    );
+  } else if (personManualQuery.isLoading) {
+    CardReturn = (
+      <Skeleton component="div" width="100%" height="100%"></Skeleton>
+    );
+  } else if (personManualQuery.isError) {
+    CardReturn = (
+      <Box>
+        <Typography variant="h4" className={classes.errorStyle} gutterBottom>
+          Error:
+        </Typography>
+        <Typography variant="body1" paragraph>
+          {personManualQuery.error.message}
+        </Typography>
+      </Box>
     );
   } else if (
-    personManualAPIReturn !== undefined &&
-    personManualAPIReturn.numberOfRecords == 1
+    personManualQuery.data !== undefined &&
+    personManualQuery.data.numberOfRecords == 1
   ) {
-    CardReturn = personManualAPIReturn.manuals.map((manual) => {
-      return (
-        <div className="card-big">
-          <h1>{manual.name}</h1>
-          <p className="description">{manual.description}</p>
-        </div>
-      );
-    });
+    CardReturn = (
+      <Box>
+        {personManualQuery.data.manuals.map((manual) => {
+          return (
+            <div className="card-big">
+              <h1>{manual.name}</h1>
+              <p className="description">{manual.description}</p>
+            </div>
+          );
+        })}
+      </Box>
+    );
   } else {
     CardReturn = <div>Please Select a user on the left hand side.</div>;
   }
 
   const ManualsList = () => (
-      <List className={classes.ManualsList}>
-        {ManualsItems}
-      </List>
-    );
+    <List className={classes.ManualsList}>{ManualsItems}</List>
+  );
 
   // Return the whole page setup.
   return (
     <Grid container direction="column" spacing={1}>
       <Grid item container>
-
         <Hidden mdUp>
           <Paper className={classes.MobileManualsMenu}>
-            <Button variant="outlined" onClick={toggleDrawer(true)} startIcon={<ListIcon />}>Select Manual</Button>
+            <Button
+              variant="outlined"
+              onClick={toggleDrawer(true)}
+              startIcon={<ListIcon />}
+            >
+              Select Manual
+            </Button>
             <SwipeableDrawer
               anchor="left"
               open={mobileMenuOpen}
               onClose={toggleDrawer(false)}
               onOpen={toggleDrawer(true)}
             >
-              
               <Box className={classes.MobileSideBar}>
                 <ManualsList />
               </Box>
@@ -295,7 +329,7 @@ function personManuals({}) {
             </NextLink>
             {/* Manual Big Card */}
             <Box height="100%" width="100%" display="flex" alignItems="center">
-              <Skeleton component="div" width="100%" height="100%"></Skeleton>
+              {CardReturn}
             </Box>
           </Paper>
         </Grid>

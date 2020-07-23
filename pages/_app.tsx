@@ -1,9 +1,11 @@
 import React from "react";
 import "../styles/reset.css";
 import "../styles/main.css";
-
+import { RecoilRoot } from "recoil";
 import { CssBaseline, Grid, makeStyles } from "@material-ui/core";
 import NavBar from "../components/NavBar";
+import { SnackbarProvider } from 'notistack';
+import { ReactQueryNotifier } from "../components/ReactQueryNotifier";
 
 const useStyles = makeStyles((theme) => ({
   mainContent: {
@@ -17,23 +19,27 @@ export default function MyApp({ Component, pageProps }) {
 
   React.useEffect(() => {
     // Remove the server-side injected CSS.
-    const jssStyles = document.querySelector('#jss-server-side');
+    const jssStyles = document.querySelector("#jss-server-side");
     if (jssStyles) {
       jssStyles.parentElement.removeChild(jssStyles);
     }
   }, []);
 
   return (
-    <div>
-      <CssBaseline />
-      <Grid container direction="column">
-        <Grid item>
-          <NavBar />
+    <RecoilRoot>
+      <SnackbarProvider maxSnack={2} anchorOrigin={{horizontal:"right", vertical:"bottom"}}>
+        <CssBaseline />
+
+        <Grid container direction="column">
+          <Grid item>
+            <NavBar />
+          </Grid>
+          <Grid item className={classes.mainContent}>
+            <Component {...pageProps} />
+          </Grid>
         </Grid>
-        <Grid item className={classes.mainContent}>
-          <Component {...pageProps} />
-        </Grid>
-      </Grid>
-    </div>
+        {/* <ReactQueryNotifier/> */}
+      </SnackbarProvider>
+    </RecoilRoot>
   );
 }
