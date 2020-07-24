@@ -2,14 +2,22 @@ import React from "react";
 import "../styles/reset.css";
 import "../styles/main.css";
 import { RecoilRoot } from "recoil";
-import { CssBaseline, Grid, makeStyles } from "@material-ui/core";
+import { CssBaseline, Grid as Box, makeStyles } from "@material-ui/core";
 import NavBar from "../components/NavBar";
 import { SnackbarProvider } from 'notistack';
 import { ReactQueryNotifier } from "../components/ReactQueryNotifier";
 
 const useStyles = makeStyles((theme) => ({
+  root: {
+    display:"flex",
+    flexDirection:"column",
+    height:"100%",
+    position:"absolute",
+  },
   mainContent: {
     marginTop: theme.spacing(3),
+    flexGrow:1,
+    overflow:"scroll",
   },
 }));
 
@@ -27,17 +35,16 @@ export default function MyApp({ Component, pageProps }) {
 
   return (
     <RecoilRoot>
-      <SnackbarProvider maxSnack={2} anchorOrigin={{horizontal:"right", vertical:"bottom"}}>
+      <SnackbarProvider maxSnack={2} autoHideDuration={1000} anchorOrigin={{horizontal:"right", vertical:"bottom"}}>
         <CssBaseline />
-
-        <Grid container direction="column">
-          <Grid item>
+        <Box className={classes.root}>
+          <Box>
             <NavBar />
-          </Grid>
-          <Grid item className={classes.mainContent}>
+          </Box>
+          <Box className={classes.mainContent}>
             <Component {...pageProps} />
-          </Grid>
-        </Grid>
+          </Box>
+        </Box>
         {/* <ReactQueryNotifier/> */}
       </SnackbarProvider>
     </RecoilRoot>
