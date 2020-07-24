@@ -12,12 +12,11 @@ const useStyles = makeStyles((theme) => ({
     display:"flex",
     flexDirection:"column",
     height:"100%",
-    position:"absolute",
   },
   mainContent: {
     marginTop: theme.spacing(3),
     flexGrow:1,
-    overflow:"scroll",
+    display:"flex"
   },
 }));
 
