@@ -8,6 +8,10 @@ description:              string;
 answerToTheMeaningOfLife: string;
 }
 
+function sleep(ms) {
+return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 const httpTrigger: AzureFunction = async function (context: Context, req: HttpRequest): Promise<void> {
     context.log('HTTP trigger function processed a request.');
     let name = <String>(req.query.name || (req.body && req.body.name));
@@ -15,6 +19,8 @@ const httpTrigger: AzureFunction = async function (context: Context, req: HttpRe
     let manuals = <Manual[]>manualsData
     let numberOfRecords = 0
     let manual = <Manual>{}
+
+    await sleep(1000);
 
     // Check if we got passed a name parameter
     if (name)
