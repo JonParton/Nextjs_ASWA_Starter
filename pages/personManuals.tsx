@@ -6,8 +6,6 @@ import {
   makeStyles,
   Theme,
   createStyles,
-  IconButton,
-  Toolbar,
   Typography,
   Paper,
   Box,
@@ -20,7 +18,9 @@ import {
   ListItem,
   ListItemAvatar,
   ListItemText,
-  Link,
+  Card,
+  CardContent,
+  CardMedia,
 } from "@material-ui/core";
 import { Skeleton } from "@material-ui/lab";
 import MenuIcon from "@material-ui/icons/Menu";
@@ -34,6 +34,7 @@ import { currentManualNameState } from "../state/atoms";
 import { useRecoilState } from "recoil";
 import { usePersonManuals, usePersonManual } from "../state/ReactQueryHooks";
 import { useSnackbar } from "notistack";
+import { ReactQueryDevtools } from "react-query-devtools";
 
 export interface PersonManualAPIReturn {
   numberOfRecords: number;
@@ -52,6 +53,10 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       display: "flex",
+      flexDirection: "column",
+    },
+    flexGrow: {
+      flexGrow: 1,
     },
     menuButton: {
       marginRight: theme.spacing(2),
@@ -61,7 +66,9 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     ManualsListPaper: {
       width: "100%",
+      height: "100%",
       padding: theme.spacing(3),
+      overflowY: "auto",
     },
     ManualsList: {
       width: "250px",
@@ -69,7 +76,7 @@ const useStyles = makeStyles((theme: Theme) =>
     MainManual: {
       padding: theme.spacing(3),
       width: "100%",
-      minHeight: "500px",
+      height: "100%",
     },
     MobileManualsMenu: {
       padding: theme.spacing(3),
@@ -81,6 +88,12 @@ const useStyles = makeStyles((theme: Theme) =>
     errorStyle: {
       color: "red",
       fontWeight: "bold",
+    },
+    manualCardRoot: {
+      maxWidth: "600px",
+    },
+    cardMedia: {
+      height: 500,
     },
   })
 );
@@ -170,6 +183,8 @@ function personManuals({}) {
             startIcon={<BackspaceIcon />}
             onClick={() => {
               router.push(`/personManuals`, undefined, { shallow: true });
+              enqueueSnackbar("Returned to explanation", { variant: "info" });
+              setMobileMenuOpen(false);
             }}
             disabled={currentManualName.length == 0 ? true : false}
           >
@@ -190,13 +205,14 @@ function personManuals({}) {
                     );
                     setMobileMenuOpen(false);
                   }}
+                  selected={manual.name == currentManualName ? true : false}
+                  divider
                 >
                   <ListItemAvatar>
                     <Avatar src={manual.AvatarURL} />
                   </ListItemAvatar>
                   <ListItemText primary={manual.name} />
                 </ListItem>
-                <Divider light />
               </React.Fragment>
             );
           })}
@@ -253,13 +269,37 @@ function personManuals({}) {
     personManualQuery.data.numberOfRecords == 1
   ) {
     CardReturn = (
-      <Box>
-        {personManualQuery.data.manuals.map((manual) => {
+      <Box
+        width="100%"
+        justifyContent="center"
+        alignContent="flex-start"
+        display="flex"
+      >
+        {personManualQuery.data.manuals.map((manual: Manual) => {
           return (
-            <div className="card-big">
-              <h1>{manual.name}</h1>
-              <p className="description">{manual.description}</p>
-            </div>
+            <Card
+              className={classes.manualCardRoot}
+              variant="outlined"
+              elevation={8}
+            >
+              <CardMedia
+                className={classes.cardMedia}
+                image={manual.AvatarURL}
+                title={`${manual.name}'s Avatar`}
+              />
+              <CardContent>
+                <Typography variant="h5" component="h2">
+                  {manual.name}
+                </Typography>
+                <Typography color="textSecondary">
+                  Answer to the meaning of life:{" "}
+                  {manual.answerToTheMeaningOfLife}
+                </Typography>
+                <Typography variant="body2" component="p">
+                  {manual.description}
+                </Typography>
+              </CardContent>
+            </Card>
           );
         })}
       </Box>
@@ -274,7 +314,7 @@ function personManuals({}) {
 
   // Return the whole page setup.
   return (
-    <Grid container direction="column" spacing={1}>
+    <Grid container direction="column" spacing={1} className={classes.root}>
       <Grid item container>
         <Hidden mdUp>
           <Paper className={classes.MobileManualsMenu}>
@@ -298,14 +338,19 @@ function personManuals({}) {
           </Paper>
         </Hidden>
       </Grid>
-      <Grid item container direction="row" spacing={3}>
+      <Grid
+        item
+        container
+        direction="row"
+        spacing={3}
+        className={classes.flexGrow}
+      >
         <Grid xs={false} sm={2} item>
           <Hidden smDown>
             <Paper className={classes.ManualsListPaper} elevation={5}>
               <ManualsList />
             </Paper>
           </Hidden>
-          {/* Manuals List */}
         </Grid>
         <Grid
           xs={12}
@@ -313,7 +358,7 @@ function personManuals({}) {
           item
           container
           direction="row"
-          // className={classes.root}
+          className={classes.flexGrow}
         >
           <Paper elevation={5} className={classes.MainManual}>
             <NextLink href="/" passHref>
@@ -327,23 +372,20 @@ function personManuals({}) {
                 Back to index
               </Button>
             </NextLink>
-            {/* Manual Big Card */}
-            <Box height="100%" width="100%" display="flex" alignItems="center">
+            <Box
+              height="100%"
+              width="100%"
+              display="flex"
+              alignItems="flex-start"
+            >
               {CardReturn}
             </Box>
           </Paper>
         </Grid>
         <Grid xs={false} sm={2} item className="Gutter"></Grid>
       </Grid>
+      <ReactQueryDevtools />
     </Grid>
-
-    // <div className="project">
-    //   <aside>
-    //     <h3>Testing!!...</h3>
-    //     {leftNavItems}
-    //   </aside>
-    //   <main>{CardReturn}</main>
-    // </div>
   );
 }
 
