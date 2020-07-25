@@ -1,5 +1,3 @@
-import fetch from "isomorphic-unfetch";
-import { useQuery } from "react-query";
 import { useState, useEffect } from "react";
 import {
   Grid,
@@ -23,7 +21,6 @@ import {
   CardMedia,
 } from "@material-ui/core";
 import { Skeleton, Alert } from "@material-ui/lab";
-import MenuIcon from "@material-ui/icons/Menu";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import BackspaceIcon from "@material-ui/icons/Backspace";
 import ListIcon from "@material-ui/icons/List";
@@ -35,6 +32,7 @@ import { useRecoilState } from "recoil";
 import { usePersonManuals, usePersonManual } from "../state/ReactQueryHooks";
 import { useSnackbar } from "notistack";
 import { ReactQueryDevtools } from "react-query-devtools";
+import { ReactQueryStatusLabel } from "../components/ReactQueryStatusLabel";
 
 export interface PersonManualAPIReturn {
   numberOfRecords: number;
@@ -93,11 +91,17 @@ const useStyles = makeStyles((theme: Theme) =>
       fontWeight: "bold",
     },
     manualCardRoot: {
-      maxWidth: "600px",
+      maxWidth: "500px",
       width: "100%",
+      display:"flex",
+      flexDirection:"column",
+      alignContent:"center",
+      alignSelf:"center",
     },
     cardMedia: {
-      height: 500,
+      height: 300,
+      width:300,
+      alignSelf:"center",
     },
     alertRoot:  {
       width: '100%',
@@ -171,7 +175,7 @@ function personManuals({}) {
     );
   } else if (PersonManualsQuery.isError) {
     ManualsItems = (
-      <ListItem>
+      <ListItem key="Error">
         We got an Error from the API. The error was{" "}
         {PersonManualsQuery.error.message}
       </ListItem>
@@ -268,7 +272,9 @@ function personManuals({}) {
         justifyContent="center"
         alignContent="flex-start"
         display="flex"
+        flexDirection="column"
       >
+        <ReactQueryStatusLabel style={{width:"fit-content",alignSelf:"center",marginBottom:"10px"}} queryKey={["manual", currentManualName]}/>
         <Card
           className={classes.manualCardRoot}
           variant="outlined"
@@ -281,7 +287,6 @@ function personManuals({}) {
             paddingTop="28px"
           >
             <Skeleton height={200} width={200} variant="circle">
-              <CardMedia className={classes.cardMedia} />
             </Skeleton>
           </Box>
           <CardContent>
@@ -309,6 +314,9 @@ function personManuals({}) {
         <Typography variant="body1" paragraph>
           {personManualQuery.error.message}
         </Typography>
+        <Typography variant="body1" paragraph>
+          If this is happening locally, did you start the azure functions?
+        </Typography>
       </Box>
     );
   } else if (
@@ -327,13 +335,16 @@ function personManuals({}) {
         justifyContent="center"
         alignContent="flex-start"
         display="flex"
+        flexDirection="column"
       >
+        <ReactQueryStatusLabel style={{width:"fit-content",alignSelf:"center",marginBottom:"10px"}} queryKey={["manual", currentManualName]}/>
         {personManualQuery.data.manuals.map((manual: Manual) => {
           return (
             <Card
               className={classes.manualCardRoot}
               variant="outlined"
               elevation={8}
+              key={manual.id}
             >
               <CardMedia
                 className={classes.cardMedia}

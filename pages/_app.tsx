@@ -5,7 +5,6 @@ import { RecoilRoot } from "recoil";
 import { CssBaseline, Grid as Box, makeStyles } from "@material-ui/core";
 import NavBar from "../components/NavBar";
 import { SnackbarProvider } from 'notistack';
-import { ReactQueryNotifier } from "../components/ReactQueryNotifier";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -44,7 +43,6 @@ export default function MyApp({ Component, pageProps }) {
             <Component {...pageProps} />
           </Box>
         </Box>
-        {/* <ReactQueryNotifier/> */}
       </SnackbarProvider>
     </RecoilRoot>
   );
