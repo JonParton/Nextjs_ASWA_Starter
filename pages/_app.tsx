@@ -1,5 +1,4 @@
 import React from "react";
-import "../styles/reset.css";
 import "../styles/main.css";
 import { RecoilRoot } from "recoil";
 import { CssBaseline, Grid as Box, makeStyles } from "@material-ui/core";
