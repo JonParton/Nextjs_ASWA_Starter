@@ -32,7 +32,7 @@ export default function MyApp({ Component, pageProps }) {
 
   return (
     <RecoilRoot>
-      <SnackbarProvider maxSnack={2} autoHideDuration={1000} anchorOrigin={{horizontal:"right", vertical:"bottom"}}>
+      <SnackbarProvider maxSnack={2} autoHideDuration={2000} anchorOrigin={{horizontal:"right", vertical:"bottom"}}>
         <CssBaseline />
         <Box className={classes.root}>
           <Box>
