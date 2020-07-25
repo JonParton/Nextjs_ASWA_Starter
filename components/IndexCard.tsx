@@ -12,7 +12,6 @@ import {
 } from "@material-ui/core";
 import NextLink from "next/link";
 
-
 const useStyles = makeStyles((theme) => ({
   cardRoot: {
     //minWidth: 275,
@@ -31,40 +30,41 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function IndexCard({title, subTitle, description, exampleLink,imageURL}) {
-
+export default function IndexCard({
+  title,
+  subTitle,
+  description,
+  exampleLink,
+  imageURL,
+}) {
   const classes = useStyles();
   return (
     <Grid item sm={12} md={4}>
-      <Card className={classes.cardRoot} elevation={10}>
-        <CardMedia
-          className={classes.media}
-          image={imageURL}
-        />
-        <CardContent className={classes.flexGrow}>
-          <Typography variant="h5" component="h2">
-            {title}
-          </Typography>
-          <Typography className={classes.pos} color="textSecondary">
-            {subTitle}
-          </Typography>
-          <Typography variant="body2" component="p" gutterBottom>
-            {description}
-          </Typography>
-          {/* <Typography variant="body2" component="p">
+      <NextLink href={exampleLink}>
+        <Card className={classes.cardRoot} elevation={10}>
+          <CardMedia className={classes.media} image={imageURL} />
+          <CardContent className={classes.flexGrow}>
+            <Typography variant="h5" component="h2">
+              {title}
+            </Typography>
+            <Typography className={classes.pos} color="textSecondary">
+              {subTitle}
+            </Typography>
+            <Typography variant="body2" component="p" gutterBottom>
+              {description}
+            </Typography>
+            {/* <Typography variant="body2" component="p">
             To illustrate this click below to see an example of a simple about
             page.
           </Typography> */}
-        </CardContent>
-        <CardActions>
-          
-          <NextLink href={exampleLink}>
+          </CardContent>
+          <CardActions>
             <Button size="medium" variant="contained" fullWidth color="primary">
               See Example
             </Button>
-          </NextLink>
-        </CardActions>
-      </Card>
+          </CardActions>
+        </Card>
+      </NextLink>
     </Grid>
   );
 }
