@@ -44,7 +44,7 @@ function Project({ project, path }) {
               size="medium"
               style={{ marginBottom: "20px" }}
             >
-              Back to index
+              Back to projects
             </Button>
           </NextLink>
           <Alert severity="info">Each one of these pages has been pre-rendered at Build time during the CI Deploy</Alert>
