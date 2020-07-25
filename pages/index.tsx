@@ -18,7 +18,7 @@ function Home() {
   const classes = useStyles();
 
   return (
-    <Grid container direction="row">
+    <Grid container direction="row" alignContent="flex-start">
       <Grid xs={false} sm={2} item className="Gutter"></Grid>
       <Grid
         xs={12}
