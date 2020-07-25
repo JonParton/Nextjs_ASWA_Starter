@@ -19,6 +19,7 @@ import {
   Card,
   CardContent,
   CardMedia,
+  Link,
 } from "@material-ui/core";
 import { Skeleton, Alert } from "@material-ui/lab";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
@@ -64,7 +65,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     ManualsListPaper: {
       width: "100%",
-      minWidth:"250px",
+      minWidth: "250px",
       height: "100%",
       padding: theme.spacing(3),
       overflowY: "auto",
@@ -94,20 +95,32 @@ const useStyles = makeStyles((theme: Theme) =>
     manualCardRoot: {
       maxWidth: "500px",
       width: "100%",
-      display:"flex",
-      flexDirection:"column",
-      alignContent:"center",
-      alignSelf:"center",
+      display: "flex",
+      flexDirection: "column",
+      alignContent: "center",
+      alignSelf: "center",
     },
     cardMedia: {
       height: 300,
-      width:300,
-      alignSelf:"center",
+      width: 300,
+      alignSelf: "center",
     },
-    alertRoot:  {
-      width: '100%',
-      '& > * + *': {
+    alertRoot: {
+      width: "100%",
+      "& > * + *": {
         marginTop: theme.spacing(2),
+      },
+    },
+    imageBanner: {
+      display: "flex",
+      flexDirection: "row",
+      width: "100%",
+      alignItems: "center",
+      justifyContent: "center",
+      "& > img": {
+        minWidth: "150px",
+        maxWidth: "400px",
+        width: "30%",
       },
     },
   })
@@ -155,18 +168,18 @@ function personManuals({}) {
   if (PersonManualsQuery.isLoading) {
     ManualsItems = (
       <React.Fragment>
-        {[1, 2, 3, 4].map((i) => {
+        {[1, 2, 3, 4, 5, 6].map((i) => {
           return (
             <ListItem key={i}>
               <ListItemAvatar>
                 <Skeleton
-                  height="45px"
-                  width="45px"
+                  height="30px"
+                  width="30px"
                   variant="circle"
                 ></Skeleton>
               </ListItemAvatar>
               <ListItemText>
-                <Skeleton height="75px" />
+                <Skeleton height="30px" />
               </ListItemText>
               <Divider light />
             </ListItem>
@@ -202,7 +215,7 @@ function personManuals({}) {
               setMobileMenuOpen(false);
             }}
             disabled={currentManualName.length == 0 ? true : false}
-            style={{marginBottom:"10px"}}
+            style={{ marginBottom: "10px" }}
           >
             Clear Selection
           </Button>
@@ -242,7 +255,7 @@ function personManuals({}) {
       );
     }
   }
-  
+
   const personManualQuery = usePersonManual(currentManualName);
 
   // Work out what we should display in the Manual Card.
@@ -253,16 +266,68 @@ function personManuals({}) {
         <Typography variant="h4" gutterBottom>
           Server Rendered Frame, Client Rendered Content
         </Typography>
+
+        <Box className={classes.imageBanner}>
+          <img src="/images/undraw_next_js_8g5m.png" />
+          <Typography variant="h2" color="primary">
+            &
+          </Typography>
+          <img src="/images/undraw_react_y7wq.png" />
+        </Box>
+
         <Typography variant="body1" paragraph>
-          This page has loaded with a server rendered frame but it will
-          dynamically load in data when you ask it to.{" "}
+          This page is an example of a pre rendered static frame (Thanks {" "}
+          <Link href="https://nextjs.org/">
+            Next.js!
+          </Link> 👍⚡) but then Client Side Rendered content (Cheers <Link href="https://reactjs.org/">
+            React
+          </Link> and
+          Azure Functions! 🍻🍻). This is ideal when you need to be able to
+          display up to the second dynamic content from the server, based on
+          user input. The other use of this interaction with Azure Functions is
+          if you need to do something server side such as send an email or edit
+          persistent data in something like a database.
         </Typography>
+
         <Typography variant="body1" paragraph>
-          In fact it has probably already loaded a menu with available manuals
-          person manuals to view.{" "}
+          In this example we are also showing the handling of State. We've
+          decided to split this into two types, Client state (Global) and Sever
+          State (Data). To highlight how this is being handled you will see some
+          little data tags to show some of the nifty features of our server
+          state handler,{" "}
+          <Link href="https://react-query.tanstack.com/docs/videos">
+            React-Query
+          </Link>
+          , such as caching results then refreshing them when needed, refreshing
+          data when refocusing on the browser tab after having been away for a
+          while (😴😴) and automatic query retrying. For client state we are
+          using recoil that is also pretty damn neat (Find out all about{" "}
+          <Link href="https://recoiljs.org/">recoil and it's Atoms here!</Link>{" "}
+          ⚛⚛). With these two together we can avoid the need for something more
+          boilerplate intensive such as{" "}
+          <Link href="https://redux.js.org/">redux</Link> and{" "}
+          <Link href="https://github.com/reduxjs/redux-thunk">thunk</Link>
         </Typography>
+
+        <Alert severity="warning" style={{ marginBottom: "20px" }}>
+          Note that we have purposely slowed down the Azure Function API's for
+          this example with a 2 second sleep. AF's are normally lightening
+          quick! ⚡⚡
+        </Alert>
+
         <Typography variant="body1" paragraph>
-          Select one of them from the menu to see CSR in action.{" "}
+          We've also included a notification handler in the form of{" "}
+          <Link href="https://github.com/iamhosseindhv/notistack">
+            NotiStack
+          </Link>{" "}
+          so you can, for example, notify users on the completion of those async
+          tasks you have been firing off to azure functions! In this case we've
+          just shoe horned it into the example when you clear the selection but
+          it gives you the idea!
+        </Typography>
+
+        <Typography variant="body1" paragraph>
+          To see all this in action select a Person Manual from the menu. ↖↖
         </Typography>
       </Box>
     );
@@ -276,7 +341,14 @@ function personManuals({}) {
         display="flex"
         flexDirection="column"
       >
-        <ReactQueryStatusLabel style={{width:"fit-content",alignSelf:"center",marginBottom:"10px"}} queryKey={["manual", currentManualName]}/>
+        <ReactQueryStatusLabel
+          style={{
+            width: "fit-content",
+            alignSelf: "center",
+            marginBottom: "10px",
+          }}
+          queryKey={["manual", currentManualName]}
+        />
         <Card
           className={classes.manualCardRoot}
           variant="outlined"
@@ -288,8 +360,7 @@ function personManuals({}) {
             display="flex"
             paddingTop="28px"
           >
-            <Skeleton height={200} width={200} variant="circle">
-            </Skeleton>
+            <Skeleton height={200} width={200} variant="circle"></Skeleton>
           </Box>
           <CardContent>
             <Typography variant="h5" component="h2">
@@ -310,7 +381,14 @@ function personManuals({}) {
   } else if (personManualQuery.isError) {
     CardReturn = (
       <Box>
-        <ReactQueryStatusLabel style={{width:"fit-content",alignSelf:"center",marginBottom:"10px"}} queryKey={["manual", currentManualName]}/>
+        <ReactQueryStatusLabel
+          style={{
+            width: "fit-content",
+            alignSelf: "center",
+            marginBottom: "10px",
+          }}
+          queryKey={["manual", currentManualName]}
+        />
         <Typography variant="h4" className={classes.errorStyle} gutterBottom>
           Error:
         </Typography>
@@ -327,49 +405,57 @@ function personManuals({}) {
     personManualQuery.data.numberOfRecords == 1
   ) {
     CardReturn = (
-      <Box
-        className={classes.alertRoot}
-        display="flex"
-        flexDirection="column">
-        <Alert severity="info">In loading this manual we also did a shallow navigation to include the manual name in the URL. This means the URL could be copied and shared!</Alert>
-        <Alert severity="warning">I haven't found a way to do this with CSR to clean up the url to be just a /[manual]</Alert>
-      <Box
-        width="100%"
-        justifyContent="center"
-        alignContent="flex-start"
-        display="flex"
-        flexDirection="column"
-      >
-        <ReactQueryStatusLabel style={{width:"fit-content",alignSelf:"center",marginBottom:"10px"}} queryKey={["manual", currentManualName]}/>
-        {personManualQuery.data.manuals.map((manual: Manual) => {
-          return (
-            <Card
-              className={classes.manualCardRoot}
-              variant="outlined"
-              elevation={8}
-              key={manual.id}
-            >
-              <CardMedia
-                className={classes.cardMedia}
-                image={manual.AvatarURL}
-                title={`${manual.name}'s Avatar`}
-              />
-              <CardContent>
-                <Typography variant="h5" component="h2">
-                  {manual.name}
-                </Typography>
-                <Typography color="textSecondary">
-                  Answer to the meaning of life:{" "}
-                  {manual.answerToTheMeaningOfLife}
-                </Typography>
-                <Typography variant="body2" component="p">
-                  {manual.description}
-                </Typography>
-              </CardContent>
-            </Card>
-          );
-        })}
-      </Box>
+      <Box className={classes.alertRoot} display="flex" flexDirection="column">
+        <Alert severity="info">
+          In loading this manual we also did a shallow navigation to include the
+          manual name in the URL. This means the URL could be copied and shared!
+          (Deep Linking) Note: I haven't found a way to do this with clean url's
+          (IE just /[manual])
+        </Alert>
+        <Box
+          width="100%"
+          justifyContent="center"
+          alignContent="flex-start"
+          display="flex"
+          flexDirection="column"
+        >
+          <ReactQueryStatusLabel
+            style={{
+              width: "fit-content",
+              alignSelf: "center",
+              marginBottom: "10px",
+            }}
+            queryKey={["manual", currentManualName]}
+          />
+          {personManualQuery.data.manuals.map((manual: Manual) => {
+            return (
+              <Card
+                className={classes.manualCardRoot}
+                variant="outlined"
+                elevation={8}
+                key={manual.id}
+              >
+                <CardMedia
+                  className={classes.cardMedia}
+                  image={manual.AvatarURL}
+                  title={`${manual.name}'s Avatar`}
+                />
+                <CardContent>
+                  <Typography variant="h5" component="h2">
+                    {manual.name}
+                  </Typography>
+                  <Typography color="textSecondary" paragraph>
+                    Answer to the meaning of life:{" "}
+                    {manual.answerToTheMeaningOfLife}
+                  </Typography>
+                  <Typography variant="body2" component="p">
+                    {manual.description}
+                  </Typography>
+                </CardContent>
+              </Card>
+            );
+          })}
+        </Box>
       </Box>
     );
   } else {
@@ -401,7 +487,7 @@ function personManuals({}) {
       size="medium"
       onClick={toggleDrawer(true)}
       startIcon={<ListIcon />}
-      style={{ marginBottom: "20px"}}
+      style={{ marginBottom: "20px" }}
     >
       Select Manual
     </Button>
@@ -409,7 +495,12 @@ function personManuals({}) {
 
   // Return the whole page setup.
   return (
-    <Grid container direction="column" className={classes.root} style={{padding:"12px"}}>
+    <Grid
+      container
+      direction="column"
+      className={classes.root}
+      style={{ padding: "12px" }}
+    >
       <Hidden lgUp>
         <Grid item container className={classes.MobileManualsMenuContainer}>
           <Paper className={classes.MobileManualsMenu}>
@@ -424,8 +515,15 @@ function personManuals({}) {
             >
               <Box className={classes.MobileSideBar}>
                 <ManualsList />
-                <ReactQueryStatusLabel style={{alignSelf:"flex-end",width:"fit-content",maxWidth:"200px",marginTop:"20px"}} queryKey={["manuals"]}/>
-
+                <ReactQueryStatusLabel
+                  style={{
+                    alignSelf: "flex-end",
+                    width: "fit-content",
+                    maxWidth: "200px",
+                    marginTop: "20px",
+                  }}
+                  queryKey={["manuals"]}
+                />
               </Box>
             </SwipeableDrawer>
           </Paper>
@@ -442,7 +540,15 @@ function personManuals({}) {
           <Grid md={false} lg={2} item>
             <Paper className={classes.ManualsListPaper} elevation={5}>
               <ManualsList />
-              <ReactQueryStatusLabel style={{alignSelf:"flex-end",width:"fit-content",maxWidth:"230px",marginTop:"20px"}} queryKey={["manuals"]}/>
+              <ReactQueryStatusLabel
+                style={{
+                  alignSelf: "flex-end",
+                  width: "fit-content",
+                  maxWidth: "230px",
+                  marginTop: "20px",
+                }}
+                queryKey={["manuals"]}
+              />
             </Paper>
           </Grid>
         </Hidden>
@@ -456,7 +562,7 @@ function personManuals({}) {
         >
           <Paper elevation={5} className={classes.MainManual}>
             <Hidden lgUp>
-              <SelectManualsButton /> 
+              <SelectManualsButton />
             </Hidden>
 
             <Hidden mdDown>
