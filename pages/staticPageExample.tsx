@@ -87,7 +87,7 @@ const staticPageExample = () => (
           ))}
         </Grid>
         <Typography variant="body1" color="textPrimary" paragraph>
-          The above a singular block of Card code that has been mapped from a simple value array.
+          The above is a singular block of Card code that has been mapped from a simple value array.
         </Typography>
       </Paper>
     </Grid>
