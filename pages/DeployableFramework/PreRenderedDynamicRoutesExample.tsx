@@ -35,7 +35,7 @@ function PreRenderedDynamicRoutesExample() {
   const classes = useStyles();
 
   return (
-    <Grid container spacing={1}>
+    <Grid container>
       <Grid item sm={false} md={2} className="Gutter"></Grid>
       <Grid item sm={12} md={8}>
         <Paper className={classes.paper}>

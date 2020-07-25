@@ -32,7 +32,7 @@ function Project({ project, path }) {
   const classes = useStyles();
   console.log(path);
   return (
-    <Grid container spacing={1}>
+    <Grid container>
       <Grid item sm={false} md={2} className="Gutter"></Grid>
       <Grid item container justify="center" sm={12} md={8}>
         <Paper className={classes.paperMain} style={{ maxWidth: "800px" }}>

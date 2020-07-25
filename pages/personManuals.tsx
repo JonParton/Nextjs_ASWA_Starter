@@ -395,7 +395,7 @@ function personManuals({}) {
 
   // Return the whole page setup.
   return (
-    <Grid container direction="column" spacing={1} className={classes.root}>
+    <Grid container direction="column" className={classes.root}>
       <Hidden mdUp>
         <Grid item container className={classes.MobileManualsMenuContainer}>
           <Paper className={classes.MobileManualsMenu}>
@@ -420,7 +420,6 @@ function personManuals({}) {
         item
         container
         direction="row"
-        spacing={3}
         className={classes.flexGrow}
       >
         <Hidden smDown>
