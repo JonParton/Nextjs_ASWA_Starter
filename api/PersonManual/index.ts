@@ -20,7 +20,7 @@ const httpTrigger: AzureFunction = async function (context: Context, req: HttpRe
     let numberOfRecords = 0
     let manual = <Manual>{}
 
-    await sleep(1000);
+    await sleep(2000);
 
     // Check if we got passed a name parameter
     if (name)

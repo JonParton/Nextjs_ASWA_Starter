@@ -64,6 +64,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     ManualsListPaper: {
       width: "100%",
+      minWidth:"250px",
       height: "100%",
       padding: theme.spacing(3),
       overflowY: "auto",
@@ -241,6 +242,7 @@ function personManuals({}) {
       );
     }
   }
+  
   const personManualQuery = usePersonManual(currentManualName);
 
   // Work out what we should display in the Manual Card.
@@ -308,6 +310,7 @@ function personManuals({}) {
   } else if (personManualQuery.isError) {
     CardReturn = (
       <Box>
+        <ReactQueryStatusLabel style={{width:"fit-content",alignSelf:"center",marginBottom:"10px"}} queryKey={["manual", currentManualName]}/>
         <Typography variant="h4" className={classes.errorStyle} gutterBottom>
           Error:
         </Typography>
@@ -370,7 +373,7 @@ function personManuals({}) {
       </Box>
     );
   } else {
-    CardReturn = <div>Please Select a user on the left hand side.</div>;
+    CardReturn = <div>Please Select a manual on the left hand side.</div>;
   }
 
   const ManualsList = () => (
@@ -406,8 +409,8 @@ function personManuals({}) {
 
   // Return the whole page setup.
   return (
-    <Grid container direction="column" className={classes.root}>
-      <Hidden mdUp>
+    <Grid container direction="column" className={classes.root} style={{padding:"12px"}}>
+      <Hidden lgUp>
         <Grid item container className={classes.MobileManualsMenuContainer}>
           <Paper className={classes.MobileManualsMenu}>
             <Box display="flex" flexDirection="row" justifyContent="flex-start">
@@ -421,6 +424,8 @@ function personManuals({}) {
             >
               <Box className={classes.MobileSideBar}>
                 <ManualsList />
+                <ReactQueryStatusLabel style={{alignSelf:"flex-end",width:"fit-content",maxWidth:"200px",marginTop:"20px"}} queryKey={["manuals"]}/>
+
               </Box>
             </SwipeableDrawer>
           </Paper>
@@ -431,26 +436,33 @@ function personManuals({}) {
         container
         direction="row"
         className={classes.flexGrow}
+        spacing={1}
       >
-        <Hidden smDown>
-          <Grid xs={false} sm={2} item>
+        <Hidden mdDown>
+          <Grid md={false} lg={2} item>
             <Paper className={classes.ManualsListPaper} elevation={5}>
               <ManualsList />
+              <ReactQueryStatusLabel style={{alignSelf:"flex-end",width:"fit-content",maxWidth:"230px",marginTop:"20px"}} queryKey={["manuals"]}/>
             </Paper>
           </Grid>
         </Hidden>
         <Grid
-          xs={12}
-          sm={8}
+          md={12}
+          lg={8}
           item
           container
           direction="row"
           className={classes.flexGrow}
         >
           <Paper elevation={5} className={classes.MainManual}>
-            <Hidden mdUp>
+            <Hidden lgUp>
               <SelectManualsButton /> 
             </Hidden>
+
+            <Hidden mdDown>
+              <BackButton />
+            </Hidden>
+
             <Box
               height="100%"
               width="100%"
@@ -461,7 +473,7 @@ function personManuals({}) {
             </Box>
           </Paper>
         </Grid>
-        <Grid xs={false} sm={2} item className="Gutter"></Grid>
+        <Grid md={false} lg={2} item className="Gutter"></Grid>
       </Grid>
       <ReactQueryDevtools />
     </Grid>

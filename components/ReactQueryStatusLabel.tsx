@@ -1,15 +1,22 @@
 import { useQueryCache } from "react-query";
-import { CircularProgress, Chip } from "@material-ui/core";
+import { CircularProgress, Chip, Tooltip, makeStyles } from "@material-ui/core";
 import DoneIcon from "@material-ui/icons/Done";
+import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
+
+const useStyles = makeStyles((theme) => ({
+  tooltip: {
+    fontSize: "1em",
+  },
+}));
 
 export function ReactQueryStatusLabel(props) {
-
-  var   { queryKey, ...other } = props;
+  var { queryKey, ...other } = props;
   const queryCache = useQueryCache();
   const query = queryCache.getQuery(queryKey);
+  const classes = useStyles();
 
   var labelText: string;
-  var lastUpdated:Date = new Date(query.state.updatedAt)
+  var lastUpdated: Date = new Date(query.state.updatedAt);
 
   if (query.state.isFetching) {
     if (query.state.status === "loading") {
@@ -19,9 +26,7 @@ export function ReactQueryStatusLabel(props) {
           : ""
       }`;
     } else {
-      labelText = `Data last Updated at ${
-        lastUpdated.toLocaleTimeString()
-      }, Refreshing Data Now! ${
+      labelText = `Data Refreshed at ${lastUpdated.toLocaleTimeString()}, Refreshing Data Now! ${
         query.state.failureCount > 0
           ? `Failed... Retry # ${query.state.failureCount}`
           : ""
@@ -29,16 +34,26 @@ export function ReactQueryStatusLabel(props) {
     }
   } else if (query.state.status === "error") {
     var error: Error = query.state.error as Error;
-    labelText = `Retied ${query.state.failureCount} times and still no luck. We got an error from the server. ${error.message}.`;
+    labelText = `Retried ${query.state.failureCount} times and still no luck. We got an error from the server. ${error.message}.`;
   } else {
-    labelText = `Data last Updated at ${lastUpdated.toLocaleTimeString()}`;
+    labelText = `Data Refreshed at ${lastUpdated.toLocaleTimeString()}`;
   }
 
   return (
-    <Chip
-      avatar={query.state.isFetching?<CircularProgress size="small" />:<DoneIcon />}
-      label={labelText}
-      {...other}
-    />
+    <Tooltip title={labelText} classes={{tooltip:classes.tooltip}} enterTouchDelay={0}>
+      <Chip
+        avatar={
+          query.state.status === "error"?
+          <ErrorOutlineIcon /> :
+          query.state.isFetching ? (
+            <CircularProgress size="small" />
+          ) : (
+            <DoneIcon />
+          )
+        }
+        label={labelText}
+        {...other}
+      />
+    </Tooltip>
   );
 }
