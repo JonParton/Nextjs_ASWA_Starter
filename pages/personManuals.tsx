@@ -387,7 +387,7 @@ function personManuals({}) {
       size="medium"
       onClick={toggleDrawer(true)}
       startIcon={<ListIcon />}
-      style={{ marginBottom: "20px", marginLeft: "10px" }}
+      style={{ marginBottom: "20px"}}
     >
       Select Manual
     </Button>
@@ -401,7 +401,6 @@ function personManuals({}) {
           <Paper className={classes.MobileManualsMenu}>
             <Box display="flex" flexDirection="row" justifyContent="flex-start">
               <BackButton />
-              <SelectManualsButton />
             </Box>
             <SwipeableDrawer
               anchor="left"
@@ -438,8 +437,8 @@ function personManuals({}) {
           className={classes.flexGrow}
         >
           <Paper elevation={5} className={classes.MainManual}>
-            <Hidden smDown>
-              <BackButton />
+            <Hidden mdUp>
+              <SelectManualsButton /> 
             </Hidden>
             <Box
               height="100%"
