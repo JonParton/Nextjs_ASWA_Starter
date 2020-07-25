@@ -22,7 +22,7 @@ import {
   CardContent,
   CardMedia,
 } from "@material-ui/core";
-import { Skeleton } from "@material-ui/lab";
+import { Skeleton, Alert } from "@material-ui/lab";
 import MenuIcon from "@material-ui/icons/Menu";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import BackspaceIcon from "@material-ui/icons/Backspace";
@@ -78,6 +78,9 @@ const useStyles = makeStyles((theme: Theme) =>
       width: "100%",
       height: "100%",
     },
+    MobileManualsMenuContainer: {
+      marginTop: -theme.spacing(3),
+    },
     MobileManualsMenu: {
       padding: theme.spacing(3),
       width: "100%",
@@ -91,9 +94,16 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     manualCardRoot: {
       maxWidth: "600px",
+      width: "100%",
     },
     cardMedia: {
       height: 500,
+    },
+    alertRoot:  {
+      width: '100%',
+      '& > * + *': {
+        marginTop: theme.spacing(2),
+      },
     },
   })
 );
@@ -187,6 +197,7 @@ function personManuals({}) {
               setMobileMenuOpen(false);
             }}
             disabled={currentManualName.length == 0 ? true : false}
+            style={{marginBottom:"10px"}}
           >
             Clear Selection
           </Button>
@@ -251,7 +262,43 @@ function personManuals({}) {
     );
   } else if (personManualQuery.isLoading) {
     CardReturn = (
-      <Skeleton component="div" width="100%" height="100%"></Skeleton>
+      // <Skeleton component="div" width="100%" height="100%"></Skeleton>
+      <Box
+        width="100%"
+        justifyContent="center"
+        alignContent="flex-start"
+        display="flex"
+      >
+        <Card
+          className={classes.manualCardRoot}
+          variant="outlined"
+          elevation={8}
+        >
+          <Box
+            width="100%"
+            justifyContent="center"
+            display="flex"
+            paddingTop="28px"
+          >
+            <Skeleton height={200} width={200} variant="circle">
+              <CardMedia className={classes.cardMedia} />
+            </Skeleton>
+          </Box>
+          <CardContent>
+            <Typography variant="h5" component="h2">
+              <Skeleton width={80} />
+            </Typography>
+            <Typography color="textSecondary">
+              <Skeleton width={160} />
+            </Typography>
+            <Typography variant="body2" component="p">
+              <Skeleton width={"100%"} />
+              <Skeleton width={"100%"} />
+              <Skeleton width={"60%"} />
+            </Typography>
+          </CardContent>
+        </Card>
+      </Box>
     );
   } else if (personManualQuery.isError) {
     CardReturn = (
@@ -269,6 +316,12 @@ function personManuals({}) {
     personManualQuery.data.numberOfRecords == 1
   ) {
     CardReturn = (
+      <Box
+        className={classes.alertRoot}
+        display="flex"
+        flexDirection="column">
+        <Alert severity="info">In loading this manual we also did a shallow navigation to include the manual name in the URL. This means the URL could be copied and shared!</Alert>
+        <Alert severity="warning">I haven't found a way to do this with CSR to clean up the url to be just a /[manual]</Alert>
       <Box
         width="100%"
         justifyContent="center"
@@ -303,6 +356,7 @@ function personManuals({}) {
           );
         })}
       </Box>
+      </Box>
     );
   } else {
     CardReturn = <div>Please Select a user on the left hand side.</div>;
@@ -312,19 +366,43 @@ function personManuals({}) {
     <List className={classes.ManualsList}>{ManualsItems}</List>
   );
 
+  const BackButton = () => (
+    <NextLink href="/" passHref>
+      <Button
+        variant="outlined"
+        color="default"
+        startIcon={<ArrowBackIcon />}
+        size="medium"
+        style={{ marginBottom: "20px" }}
+      >
+        Back to index
+      </Button>
+    </NextLink>
+  );
+
+  const SelectManualsButton = () => (
+    <Button
+      variant="contained"
+      color="primary"
+      size="medium"
+      onClick={toggleDrawer(true)}
+      startIcon={<ListIcon />}
+      style={{ marginBottom: "20px", marginLeft: "10px" }}
+    >
+      Select Manual
+    </Button>
+  );
+
   // Return the whole page setup.
   return (
     <Grid container direction="column" spacing={1} className={classes.root}>
-      <Grid item container>
-        <Hidden mdUp>
+      <Hidden mdUp>
+        <Grid item container className={classes.MobileManualsMenuContainer}>
           <Paper className={classes.MobileManualsMenu}>
-            <Button
-              variant="outlined"
-              onClick={toggleDrawer(true)}
-              startIcon={<ListIcon />}
-            >
-              Select Manual
-            </Button>
+            <Box display="flex" flexDirection="row" justifyContent="flex-start">
+              <BackButton />
+              <SelectManualsButton />
+            </Box>
             <SwipeableDrawer
               anchor="left"
               open={mobileMenuOpen}
@@ -336,8 +414,8 @@ function personManuals({}) {
               </Box>
             </SwipeableDrawer>
           </Paper>
-        </Hidden>
-      </Grid>
+        </Grid>
+      </Hidden>
       <Grid
         item
         container
@@ -345,13 +423,13 @@ function personManuals({}) {
         spacing={3}
         className={classes.flexGrow}
       >
-        <Grid xs={false} sm={2} item>
-          <Hidden smDown>
+        <Hidden smDown>
+          <Grid xs={false} sm={2} item>
             <Paper className={classes.ManualsListPaper} elevation={5}>
               <ManualsList />
             </Paper>
-          </Hidden>
-        </Grid>
+          </Grid>
+        </Hidden>
         <Grid
           xs={12}
           sm={8}
@@ -361,17 +439,9 @@ function personManuals({}) {
           className={classes.flexGrow}
         >
           <Paper elevation={5} className={classes.MainManual}>
-            <NextLink href="/" passHref>
-              <Button
-                variant="outlined"
-                color="default"
-                startIcon={<ArrowBackIcon />}
-                size="medium"
-                style={{ marginBottom: "20px" }}
-              >
-                Back to index
-              </Button>
-            </NextLink>
+            <Hidden smDown>
+              <BackButton />
+            </Hidden>
             <Box
               height="100%"
               width="100%"
