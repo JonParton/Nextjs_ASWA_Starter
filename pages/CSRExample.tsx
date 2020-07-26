@@ -113,7 +113,7 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 )
 
-export const personManuals: React.FunctionComponent = () => {
+export const CSRExample: React.FunctionComponent = () => {
   const classes = useStyles()
   const router = useRouter()
   const { enqueueSnackbar } = useSnackbar()
@@ -197,7 +197,7 @@ export const personManuals: React.FunctionComponent = () => {
             color="primary"
             startIcon={<BackspaceIcon />}
             onClick={() => {
-              router.push(`/personManuals`, undefined, { shallow: true })
+              router.push(`/CSRExample`, undefined, { shallow: true })
               enqueueSnackbar('Returned to explanation', { variant: 'info' })
               setMobileMenuOpen(false)
             }}
@@ -215,7 +215,7 @@ export const personManuals: React.FunctionComponent = () => {
                   href="#"
                   onClick={() => {
                     router.push(
-                      `/personManuals?manual=${manual.name}`,
+                      `/CSRExample?manual=${manual.name}`,
                       undefined,
                       { shallow: true },
                     )
@@ -246,7 +246,7 @@ export const personManuals: React.FunctionComponent = () => {
   const personManualQuery = usePersonManual(currentManualName)
 
   // Work out what we should display in the Manual Card.
-  let CardReturn
+  let CardReturn: JSX.Element
   if (currentManualName.length == 0) {
     setCurrentPageTitle(`CSR Example`)
     CardReturn = (
@@ -510,7 +510,7 @@ export const personManuals: React.FunctionComponent = () => {
                   style={{
                     alignSelf: 'flex-end',
                     width: 'fit-content',
-                    maxWidth: '200px',
+                    maxWidth: '230px',
                     marginTop: '20px',
                   }}
                   queryKey={['manuals']}
@@ -588,4 +588,4 @@ export const personManuals: React.FunctionComponent = () => {
 //   return {props:{}}
 // };
 
-export default personManuals
+export default CSRExample

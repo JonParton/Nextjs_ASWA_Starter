@@ -64,7 +64,7 @@ const Home: React.FunctionComponent = () => {
           title="SSR Frame, CSR Content!"
           subTitle="Let Next.js render the frame on the server then load content dynamically on the client side."
           description={`An example of client side rendered content served up by azure functions. This is how to interact with server side code from a "static" page.`}
-          exampleLink="/personManuals"
+          exampleLink="/CSRExample"
           imageURL="/images/undraw_react_y7wq.png"
         />
         {/* Card 2 */}
