@@ -7,7 +7,8 @@
     "build": "next build && next export",
     "start": "next start",
     "lint": "eslint",
-    "format": "prettier --write '**.ts' '**.tsx'"
+    "format": "prettier --write \"{utils,pages,state,components,api,styles}/**/*.{ts,tsx,css,js,jsx}\"",
+    "checkFormat": "prettier --check \"{utils,pages,state,components,api,styles}/**/*.{ts,tsx,css,js,jsx}\""
   },
   "dependencies": {
     "@material-ui/core": "^4.11.0",
