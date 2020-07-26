@@ -5,9 +5,9 @@ import {
   Container,
   Box,
   Button,
-} from "@material-ui/core";
-import ArrowBackIcon from "@material-ui/icons/ArrowBack";
-import NextLink from "next/link";
+} from '@material-ui/core'
+import ArrowBackIcon from '@material-ui/icons/ArrowBack'
+import NextLink from 'next/link'
 
 const staticPageExample = () => (
   // Note styles are added here using the Main.css instead of using Javascript styling. This is just to give an example of doing this!
@@ -23,7 +23,7 @@ const staticPageExample = () => (
             color="default"
             startIcon={<ArrowBackIcon />}
             size="medium"
-            style={{ marginBottom: "20px" }}
+            style={{ marginBottom: '20px' }}
           >
             Back to index
           </Button>
@@ -40,8 +40,8 @@ const staticPageExample = () => (
         <Box className="polaroid">
           <img src="/images/undraw_static_assets_rpm6.png"></img>
           <Typography variant="caption" color="textSecondary">
-            You can include static content in the "/public/" folder and access
-            it as "/"{" "}
+            You can include static content in the &quot;/public/&quot; folder
+            and access it as &quot;/&quot;{' '}
           </Typography>
         </Box>
         <Typography variant="body1" color="textPrimary" paragraph>
@@ -49,7 +49,7 @@ const staticPageExample = () => (
           easily be served up. The image above is actually stored in the project
           source under `public/images/undraw_static_assets_rpm6.png` however
           Next.js makes it magically available at
-          `/images/undraw_static_assets_rpm6.png` (notice the lack of{" "}
+          `/images/undraw_static_assets_rpm6.png` (notice the lack of{' '}
           <strong>public!</strong>)
         </Typography>
         <Typography variant="body1" color="textPrimary" paragraph>
@@ -65,7 +65,7 @@ const staticPageExample = () => (
           container
           justify="center"
           spacing={5}
-          style={{ marginBottom: "20px" }}
+          style={{ marginBottom: '20px' }}
         >
           {[0, 1, 2, 3, 4, 5, 6].map((value) => (
             <Grid key={value} item>
@@ -73,9 +73,9 @@ const staticPageExample = () => (
                 style={{
                   height: 200,
                   width: 100,
-                  display: "Flex",
-                  justifyContent: "center",
-                  alignItems: "center",
+                  display: 'Flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
                 }}
                 elevation={8}
               >
@@ -87,7 +87,8 @@ const staticPageExample = () => (
           ))}
         </Grid>
         <Typography variant="body1" color="textPrimary" paragraph>
-          The above is a singular block of Card code that has been mapped from a simple value array.
+          The above is a singular block of Card code that has been mapped from a
+          simple value array.
         </Typography>
       </Paper>
     </Grid>
@@ -105,6 +106,6 @@ const staticPageExample = () => (
   //   <p><a href="/"> Go Home!</a></p>
   //   </div>
   // </div>
-);
+)
 
-export default staticPageExample;
+export default staticPageExample

@@ -1,17 +1,16 @@
-import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import React from 'react'
+import { makeStyles } from '@material-ui/core/styles'
 import {
   AppBar,
   Toolbar,
   Typography,
   Button,
   Box,
-  Hidden,
   Tooltip,
   Link,
-} from "@material-ui/core";
-import GitHubIcon from "@material-ui/icons/GitHub";
-import NextLink from "next/link";
+} from '@material-ui/core'
+import GitHubIcon from '@material-ui/icons/GitHub'
+import NextLink from 'next/link'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -19,15 +18,15 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     flexGrow: 1,
-    textTransform: "none",
+    textTransform: 'none',
   },
   tooltip: {
-    fontSize: "20px",
+    fontSize: '20px',
   },
-}));
+}))
 
 export default function ButtonAppBar() {
-  const classes = useStyles();
+  const classes = useStyles()
 
   return (
     <div className={classes.root}>
@@ -36,7 +35,7 @@ export default function ButtonAppBar() {
           <NextLink href="/" passHref>
             <Button color="inherit" component="a" className={classes.title}>
               <Typography variant="h6" className={classes.title}>
-                Next.js ASWA's Example
+                Next.js ASWA&apos;s Example
               </Typography>
             </Button>
           </NextLink>
@@ -54,7 +53,7 @@ export default function ButtonAppBar() {
                 startIcon={<GitHubIcon />}
                 color="inherit"
               >
-                <Box display={{ xs: "none", sm: "block" }}>
+                <Box display={{ xs: 'none', sm: 'block' }}>
                   <Typography variant="h6" className={classes.title}>
                     See the code on GitHub
                   </Typography>
@@ -65,5 +64,5 @@ export default function ButtonAppBar() {
         </Toolbar>
       </AppBar>
     </div>
-  );
+  )
 }

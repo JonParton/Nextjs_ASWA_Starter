@@ -1,4 +1,4 @@
-html{
+html {
   overflow-x: hidden;
 }
 
@@ -18,7 +18,8 @@ body {
   height: 100%;
 }
 
-html, body {
+html,
+body {
   margin: 0px;
   padding: 0px;
 }
@@ -31,7 +32,7 @@ html, body {
   width: 450px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   text-align: center;
-  margin:20px;
+  margin: 20px;
 }
 
 .polaroid img {

@@ -1,24 +1,24 @@
-import React from "react";
-import "../styles/main.css";
-import { RecoilRoot, useRecoilValue } from "recoil";
-import { CssBaseline, Grid as Box, makeStyles } from "@material-ui/core";
-import NavBar from "../components/NavBar";
-import { SnackbarProvider } from 'notistack';
+import React from 'react'
+import '../styles/main.css'
+import { RecoilRoot, useRecoilValue } from 'recoil'
+import { CssBaseline, Grid as Box, makeStyles } from '@material-ui/core'
+import NavBar from '../components/NavBar'
+import { SnackbarProvider } from 'notistack'
 import Head from 'next/head'
-import { currentFullPageTitleState } from "../state/atoms";
+import { currentFullPageTitleState } from '../state/atoms'
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    display:"flex",
-    flexDirection:"column",
-    height:"100%",
+    display: 'flex',
+    flexDirection: 'column',
+    height: '100%',
   },
   mainContent: {
     marginTop: theme.spacing(3),
-    flexGrow:1,
-    display:"flex"
+    flexGrow: 1,
+    display: 'flex',
   },
-}));
+}))
 
 // A small component that lives inside RecoilRoot and allows us to set the page title from anywhere in the App!
 function CustomHeadTitle() {
@@ -33,19 +33,23 @@ function CustomHeadTitle() {
 
 // This default export is required in a new `pages/_app.js` file.
 export default function MyApp({ Component, pageProps }) {
-  const classes = useStyles();
+  const classes = useStyles()
 
   React.useEffect(() => {
     // Remove the server-side injected CSS.
-    const jssStyles = document.querySelector("#jss-server-side");
+    const jssStyles = document.querySelector('#jss-server-side')
     if (jssStyles) {
-      jssStyles.parentElement.removeChild(jssStyles);
+      jssStyles.parentElement.removeChild(jssStyles)
     }
-  }, []);
+  }, [])
 
   return (
     <RecoilRoot>
-      <SnackbarProvider maxSnack={2} autoHideDuration={2000} anchorOrigin={{horizontal:"right", vertical:"bottom"}}>
+      <SnackbarProvider
+        maxSnack={2}
+        autoHideDuration={2000}
+        anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+      >
         <CssBaseline />
         <CustomHeadTitle />
         <Box className={classes.root}>
@@ -58,5 +62,5 @@ export default function MyApp({ Component, pageProps }) {
         </Box>
       </SnackbarProvider>
     </RecoilRoot>
-  );
+  )
 }

@@ -1,7 +1,7 @@
-import SmallCard from "../../components/SmallCard";
-import { projectIcons } from "../../components/Icons";
+import SmallCard from '../../components/SmallCard'
+import { projectIcons } from '../../components/Icons'
 
-import { projects } from "../../utils/projectsData";
+import { projects } from '../../utils/projectsData'
 import {
   makeStyles,
   Grid,
@@ -14,16 +14,16 @@ import {
   CardActions,
   Button,
   Box,
-} from "@material-ui/core";
-import NextLink from "next/link";
-import ArrowBackIcon from "@material-ui/icons/ArrowBack";
-import Alert from "@material-ui/lab/Alert";
-import { useSetRecoilState } from "recoil";
-import { currentPageTitleState } from "../../state/atoms";
+} from '@material-ui/core'
+import NextLink from 'next/link'
+import ArrowBackIcon from '@material-ui/icons/ArrowBack'
+import Alert from '@material-ui/lab/Alert'
+import { useSetRecoilState } from 'recoil'
+import { currentPageTitleState } from '../../state/atoms'
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: "100%",
+    width: '100%',
   },
   paper: {
     padding: theme.spacing(3),
@@ -31,13 +31,13 @@ const useStyles = makeStyles((theme) => ({
   topGrid: {
     marginTop: theme.spacing(3),
   },
-}));
+}))
 
 function PreRenderedDynamicRoutesExample() {
-  const classes = useStyles();
-  const setCurrentPageTitle = useSetRecoilState(currentPageTitleState);
+  const classes = useStyles()
+  const setCurrentPageTitle = useSetRecoilState(currentPageTitleState)
 
-  setCurrentPageTitle(`Pre rendered SSR Example`);
+  setCurrentPageTitle(`Pre rendered SSR Example`)
 
   return (
     <Grid container>
@@ -50,7 +50,7 @@ function PreRenderedDynamicRoutesExample() {
               color="default"
               startIcon={<ArrowBackIcon />}
               size="medium"
-              style={{ marginBottom: "20px" }}
+              style={{ marginBottom: '20px' }}
             >
               Back to index
             </Button>
@@ -71,7 +71,7 @@ function PreRenderedDynamicRoutesExample() {
             Pre-Render a route/page for each of the frameworks you can publish
             to Azure Static Web Apps.
           </Typography>
-          <Alert severity="info" elevation={2} style={{ marginBottom: "20px" }}>
+          <Alert severity="info" elevation={2} style={{ marginBottom: '20px' }}>
             Note that because each page is pre-rendered during the CI
             Build/Deploy information like the current Stars and Issues for each
             framework will be frozen in time as of the code publish date.
@@ -79,7 +79,7 @@ function PreRenderedDynamicRoutesExample() {
           <Alert
             severity="warning"
             elevation={2}
-            style={{ marginBottom: "20px" }}
+            style={{ marginBottom: '20px' }}
           >
             For the pre-rendering of routes to work, you must know all the
             dynamic routes at build time and this information cannot come from
@@ -87,7 +87,7 @@ function PreRenderedDynamicRoutesExample() {
           </Alert>
           <Grid container direction="row" spacing={3}>
             {projects.map((project) => {
-              const Icon = projectIcons[project.id];
+              const Icon = projectIcons[project.id]
               return (
                 <Grid item xs={12} md={4} key={project.id}>
                   <Card className={classes.root} elevation={4}>
@@ -99,7 +99,7 @@ function PreRenderedDynamicRoutesExample() {
                         <Box
                           display="flex"
                           justifyContent="center"
-                          style={{ width: "100%" }}
+                          style={{ width: '100%' }}
                         >
                           <Icon w={153} h={163} />
                         </Box>
@@ -107,7 +107,7 @@ function PreRenderedDynamicRoutesExample() {
                           <Box
                             display="flex"
                             justifyContent="center"
-                            style={{ width: "100%" }}
+                            style={{ width: '100%' }}
                           >
                             <Typography
                               gutterBottom
@@ -122,14 +122,14 @@ function PreRenderedDynamicRoutesExample() {
                     </NextLink>
                   </Card>
                 </Grid>
-              );
+              )
             })}
           </Grid>
         </Paper>
       </Grid>
       <Grid item sm={false} md={2} className="Gutter"></Grid>
     </Grid>
-  );
+  )
 }
 
-export default PreRenderedDynamicRoutesExample;
+export default PreRenderedDynamicRoutesExample

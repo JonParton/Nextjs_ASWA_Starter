@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react'
 import {
   Grid,
   Typography,
@@ -9,15 +9,15 @@ import {
   CardContent,
   CardActions,
   CardMedia,
-} from "@material-ui/core";
-import NextLink from "next/link";
+} from '@material-ui/core'
+import NextLink from 'next/link'
 
 const useStyles = makeStyles((theme) => ({
   cardRoot: {
     //minWidth: 275,
-    height: "100%",
-    display: "flex",
-    flexDirection: "column",
+    height: '100%',
+    display: 'flex',
+    flexDirection: 'column',
   },
   pos: {
     marginBottom: 12,
@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
   media: {
     height: 270,
   },
-}));
+}))
 
 export default function IndexCard({
   title,
@@ -37,7 +37,7 @@ export default function IndexCard({
   exampleLink,
   imageURL,
 }) {
-  const classes = useStyles();
+  const classes = useStyles()
   return (
     <Grid item sm={12} md={4}>
       <NextLink href={exampleLink}>
@@ -66,5 +66,5 @@ export default function IndexCard({
         </Card>
       </NextLink>
     </Grid>
-  );
+  )
 }

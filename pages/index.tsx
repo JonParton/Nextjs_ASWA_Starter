@@ -1,10 +1,9 @@
-import React from "react";
-import { Grid, Typography, Paper, makeStyles, Link } from "@material-ui/core";
-import Alert from "@material-ui/lab/Alert";
-import NavBar from "../components/NavBar";
-import IndexCard from "../components/IndexCard";
-import { useSetRecoilState } from "recoil";
-import { currentPageTitleState } from "../state/atoms";
+import React from 'react'
+import { Grid, Typography, Paper, makeStyles, Link } from '@material-ui/core'
+import Alert from '@material-ui/lab/Alert'
+import IndexCard from '../components/IndexCard'
+import { useSetRecoilState } from 'recoil'
+import { currentPageTitleState } from '../state/atoms'
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -14,13 +13,13 @@ const useStyles = makeStyles((theme) => ({
   topGrid: {
     marginTop: theme.spacing(3),
   },
-}));
+}))
 
 function Home() {
-  const classes = useStyles();
-  const setCurrentPageTitle = useSetRecoilState(currentPageTitleState);
+  const classes = useStyles()
+  const setCurrentPageTitle = useSetRecoilState(currentPageTitleState)
 
-  setCurrentPageTitle("");
+  setCurrentPageTitle('')
 
   return (
     <Grid container direction="row" alignContent="flex-start">
@@ -40,20 +39,22 @@ function Home() {
               Next.js Azure Static Web App Page Examples
             </Typography>
             <Typography variant="body1" gutterBottom>
-              There are a few different ways to handle pages in{" "}
+              There are a few different ways to handle pages in{' '}
               <Link href="https://nextjs.org/"> Next.js</Link> and this example
-              site shows you a few ways this can be done on {" "}
+              site shows you a few ways this can be done on{' '}
               <Link href="https://azure.microsoft.com/en-gb/services/app-service/static/">
                 Azure Static Web Apps
-              </Link>{" "}
-              (ASWA's) - The free service currently in preview from Microsoft.
+              </Link>{' '}
+              (ASWA&apos;s) - The free service currently in preview from
+              Microsoft.
             </Typography>
             <br />
             <Alert severity="info">
               <Typography variant="body1" color="textSecondary">
-                Azure Static Web Apps don't use a server at run time; because of
-                this it can only serve static pages which were pre-rendered at
-                build time! Something Next.js does using `next export`.
+                Azure Static Web Apps don&apos;t use a server at run time;
+                because of this it can only serve static pages which were
+                pre-rendered at build time! Something Next.js does using `next
+                export`.
               </Typography>
             </Alert>
           </Paper>
@@ -78,20 +79,20 @@ function Home() {
           imageURL="/images/undraw_next_js_8g5m.png"
         />
         {/* Card 3 */}
-          <IndexCard
-            title="Fully Static Page (SSG)"
-            subTitle="Just like plain HTML but with the power of React!"
-            description={`You can create a page using all the power of react such as the
+        <IndexCard
+          title="Fully Static Page (SSG)"
+          subTitle="Just like plain HTML but with the power of React!"
+          description={`You can create a page using all the power of react such as the
                   extensive libraries available, map functions and extracting
                   HTML out into custom components etc. However Next.js will pre
                   render the page for you at build time
                   and serve it up super quick from the server!`}
-            exampleLink="/staticPageExample"
-            imageURL="/images/undraw_static_assets_rpm6.png"
-          />
+          exampleLink="/staticPageExample"
+          imageURL="/images/undraw_static_assets_rpm6.png"
+        />
       </Grid>
       <Grid xs={false} sm={2} item className="Gutter"></Grid>
     </Grid>
-  );
+  )
 }
-export default Home;
+export default Home
