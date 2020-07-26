@@ -6,6 +6,8 @@
     "esbenp.prettier-vscode",
     "wix.vscode-import-cost",
     "VisualStudioExptTeam.vscodeintellicode",
-    "vscode-icons-team.vscode-icons"
+    "vscode-icons-team.vscode-icons",
+    "ms-azuretools.vscode-azurestaticwebapps",
+    "msjsdiag.debugger-for-chrome"
   ]
 }
