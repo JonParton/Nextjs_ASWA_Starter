@@ -19,6 +19,8 @@ import {
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import NextLink from "next/link";
 import Alert from "@material-ui/lab/Alert";
+import { useSetRecoilState } from "recoil";
+import { currentPageTitleState } from "../../state/atoms";
 
 const useStyles = makeStyles((theme) => ({
   paperMain: {
@@ -30,7 +32,9 @@ function Project({ project, path }) {
   const projectData = projects.find((project) => project.slug === path);
   const Icon = projectIcons[projectData.id];
   const classes = useStyles();
-  console.log(path);
+  const setCurrentPageTitle = useSetRecoilState(currentPageTitleState);
+  setCurrentPageTitle(`${path} - Deployable Framework`);
+  
   return (
     <Grid container>
       <Grid item sm={false} md={2} className="Gutter"></Grid>

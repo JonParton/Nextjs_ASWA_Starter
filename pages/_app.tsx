@@ -1,9 +1,11 @@
 import React from "react";
 import "../styles/main.css";
-import { RecoilRoot } from "recoil";
+import { RecoilRoot, useRecoilValue } from "recoil";
 import { CssBaseline, Grid as Box, makeStyles } from "@material-ui/core";
 import NavBar from "../components/NavBar";
 import { SnackbarProvider } from 'notistack';
+import Head from 'next/head'
+import { currentFullPageTitleState } from "../state/atoms";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -17,6 +19,17 @@ const useStyles = makeStyles((theme) => ({
     display:"flex"
   },
 }));
+
+// A small component that lives inside RecoilRoot and allows us to set the page title from anywhere in the App!
+function CustomHeadTitle() {
+  const currentFullPageTitle = useRecoilValue(currentFullPageTitleState)
+
+  return (
+    <Head>
+      <title>{currentFullPageTitle}</title>
+    </Head>
+  )
+}
 
 // This default export is required in a new `pages/_app.js` file.
 export default function MyApp({ Component, pageProps }) {
@@ -34,6 +47,7 @@ export default function MyApp({ Component, pageProps }) {
     <RecoilRoot>
       <SnackbarProvider maxSnack={2} autoHideDuration={2000} anchorOrigin={{horizontal:"right", vertical:"bottom"}}>
         <CssBaseline />
+        <CustomHeadTitle />
         <Box className={classes.root}>
           <Box>
             <NavBar />

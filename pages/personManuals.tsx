@@ -28,8 +28,8 @@ import ListIcon from "@material-ui/icons/List";
 import NextLink from "next/link";
 import React from "react";
 import { useRouter } from "next/router";
-import { currentManualNameState } from "../state/atoms";
-import { useRecoilState } from "recoil";
+import { currentManualNameState, currentPageTitleState } from "../state/atoms";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import { usePersonManuals, usePersonManual } from "../state/ReactQueryHooks";
 import { useSnackbar } from "notistack";
 import { ReactQueryDevtools } from "react-query-devtools";
@@ -133,6 +133,7 @@ function personManuals({}) {
   const [currentManualName, setCurrentManualName] = useRecoilState(
     currentManualNameState
   );
+  const setCurrentPageTitle = useSetRecoilState(currentPageTitleState);
 
   // On load or when the Query string changes make sure we set our states.
   useEffect(() => {
@@ -261,6 +262,7 @@ function personManuals({}) {
   // Work out what we should display in the Manual Card.
   var CardReturn;
   if (currentManualName.length == 0) {
+    setCurrentPageTitle(`CSR Example`);
     CardReturn = (
       <Box>
         <Typography variant="h4" gutterBottom>
@@ -332,6 +334,7 @@ function personManuals({}) {
       </Box>
     );
   } else if (personManualQuery.isLoading) {
+    setCurrentPageTitle(`${currentManualName}'s Manual`);
     CardReturn = (
       // <Skeleton component="div" width="100%" height="100%"></Skeleton>
       <Box
@@ -379,6 +382,7 @@ function personManuals({}) {
       </Box>
     );
   } else if (personManualQuery.isError) {
+    setCurrentPageTitle(`Error`);
     CardReturn = (
       <Box>
         <ReactQueryStatusLabel
@@ -404,6 +408,7 @@ function personManuals({}) {
     personManualQuery.data !== undefined &&
     personManualQuery.data.numberOfRecords == 1
   ) {
+    setCurrentPageTitle(`${currentManualName}'s Manual`);
     CardReturn = (
       <Box className={classes.alertRoot} display="flex" flexDirection="column">
         <Alert severity="info">

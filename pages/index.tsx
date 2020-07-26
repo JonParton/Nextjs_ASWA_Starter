@@ -3,6 +3,8 @@ import { Grid, Typography, Paper, makeStyles, Link } from "@material-ui/core";
 import Alert from "@material-ui/lab/Alert";
 import NavBar from "../components/NavBar";
 import IndexCard from "../components/IndexCard";
+import { useSetRecoilState } from "recoil";
+import { currentPageTitleState } from "../state/atoms";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -16,6 +18,9 @@ const useStyles = makeStyles((theme) => ({
 
 function Home() {
   const classes = useStyles();
+  const setCurrentPageTitle = useSetRecoilState(currentPageTitleState);
+
+  setCurrentPageTitle("");
 
   return (
     <Grid container direction="row" alignContent="flex-start">

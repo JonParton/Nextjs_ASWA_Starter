@@ -18,6 +18,8 @@ import {
 import NextLink from "next/link";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import Alert from "@material-ui/lab/Alert";
+import { useSetRecoilState } from "recoil";
+import { currentPageTitleState } from "../../state/atoms";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -33,6 +35,9 @@ const useStyles = makeStyles((theme) => ({
 
 function PreRenderedDynamicRoutesExample() {
   const classes = useStyles();
+  const setCurrentPageTitle = useSetRecoilState(currentPageTitleState);
+
+  setCurrentPageTitle(`Pre rendered SSR Example`);
 
   return (
     <Grid container>
