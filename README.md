@@ -1,24 +1,48 @@
 # Next JS Static App on Azure Static Web Apps (ASWA's)
 
-This starter template / example was created based on the [Microsoft Documentation](https://docs.microsoft.com/en-us/azure/static-web-apps/deploy-nextjs). At the time of writing the Microsoft Docs had a few issues I wanted to address before sharing it to others.
+## The Example App
+
+This Repository is connected to the Example App at the following URL. (CI/CD!)
+
+[https://salmon-mushroom-0b9a38203-6.westeurope.azurestaticapps.net/](https://salmon-mushroom-0b9a38203-6.westeurope.azurestaticapps.net/)
+
+Take a look around or read on to see what this starter is all about and how to get cooking 👩‍🍳🔥🍳.
+
+## It's reason for being
+
+This starter template / example was created based on the following [Microsoft Documentation](https://docs.microsoft.com/en-us/azure/static-web-apps/deploy-nextjs). At the time of writing the Microsoft Docs had a few issues I wanted to address before sharing it to others.
 
 - It doesn't give an example of using Azure Functions as a back end API.
-  - From doing this previously I knew there were a few **GOTCHA's** in getting these set up. So I wanted to solve that and put that knowledge into this starter.
-  - I also wanted to give an example of how to use these API's on pre rendered pages created using [Static Generation](https://nextjs.org/docs/advanced-features/static-html-export) that ASWA's require you to do (`next export`).
-- It used some outdated methods to define the pre rendering and the more modern exports of `getStaticProps` and `getStaticPaths` are nicer.
+  - From doing this previously I knew there were a few **GOTCHA's** in getting these set up. So I wanted to solve them and put that knowledge into this starter.
+  - I also wanted to give an example of how to use these API's on pre rendered pages using [Static Generation](https://nextjs.org/docs/advanced-features/static-html-export) that ASWA's require you to do (`next export`).
+- It used some outdated methods to define the pre rendering to be done and the more modern exports of `getStaticProps` and `getStaticPaths` are nicer.
 - The version of Next.js being used was out of date and didn't allow the use of things like Exposed Environmental Variables on the front end (The `NEXT_PUBLIC` prefix) which is essential to make the API's work in all environments!
 - I wanted to fix various other issues like out of date references that would stop us being immediately productive!
 
-I then got a bit carried away and added in other extras that should help you be more productive!
+I then got a bit carried away, partly for my learning/curiosity, and added in other extras that should help you be more productive! ... Although it has made this starter much more opinionated! 📣🤷‍♂️
 
-- I wanted to switch the code across to use Typescript so we could make use of the better static error catching! (Strict mode not currently enabled)
-- I added Material UI to style the Example Web Page and fixed a few issues related to using MUI with Next.js.
+- I wanted to switch the code across to use Typescript so we could make use of the better static error catching! (Strict mode not currently enabled...I'm building up to it! 😨)
+- I added [Material UI](https://material-ui.com/) to style the Example Web Page and [fixed a few issues](#Material-UI-Hot-Reloading-when-using-makeStyles) related to using MUI with Next.js. If you use this as a starter for your own project I strongly suggest taking a good look at the ease of use, aesthetics and practicality of Material UI!
+- I added 2 state handlers for the application; I subscribe to the idea that [Application state and Server state should be treated differently](https://www.youtube.com/watch?v=seU46c6Jz7E). New kid on the block [Recoil.js](https://recoiljs.org/) is used for Application State (IE synchronous state solely dictated by the user / application!) and [React-Query](https://react-query.tanstack.com/docs) is utilised to manage the interface with our remote Server State (IE state related to data that is almost always asynchronous and that we don't solely control! (other users, background tasks etc)). These two can then work nicely together to keep our application in sync while avoiding reams of boiler plate code (👍👌). More details on this and my thinking behind it can be found in the [readme in the state folder](/state/README.md) 📁 as well as being seen in action on the CSR page of the Example App.
+- Added an easy way to set the page title from anywhere in the code flow of your application (In a component, in an if flow, on a page etc) See `currentPageTitleState`
+- Set up VS code to debug and made the various `package.json` scripts play nice with each other.
+- I also added and configured some opinionated use of ESLint and Prettier to make cleaning up our code mess easier.
+- As a last addition I have also added a set of recommended VSCode extensions. Feel free to follow (🐏🐑) or ignore!
 
-With all of those things added this starter should allow you to get started with your own Next.js Azure Static Web App in no time! (A few 🔋🔋🔋's included!)
+With all of those things added this starter should allow you to get started with your own Next.js Azure Static Web App in no time! (Just a few 🔋🔋🔋's included!)
 
 ## Notes from the author
 
 I'm only at the start of my React / Next.js journey so I'm sure there are loads of things that could be improved here, especially how I have done some of the react pages! Please raise issues, a pull request or drop me a note to suggest improvements here - I won't be offended!
+
+If you do contribute to this repository be sure to add your "Manual" / "Profile" to the CSR Example. The avatars are Bitmoji's and the data is stored in a JSON file in the API folder. Submit as part of your PR!
+
+## A few notes on Azure Static Web Apps
+
+Azure Static Web Apps are Microsoft's new service to host Static Web applications with the minimal of fuss. It works with a plethora of frameworks (As displayed in the Dynamic Route Prerendering section of the Example App!) but as it is still in preview there are a few limitations to bear in mind.
+
+- Currently you can only register a top level custom domain to work with them, not sub domains.
+- There is an element of limited authentication that can be switched on for set routes in the azure portal but at the moment this is limited to only 25 users. This will sorely limit it's use to be predominantly for open facing web sites. Probably by design while in preview!
 
 ## Dependencies
 
@@ -70,6 +94,14 @@ yarn dev
 ```
 
 You will also need to start the Azure Function API's if you are using them. If you are using VSCode (Recommended!) do this by opening the debug pane in VS code and hit play on the attach to Node. You can also do `ctrl-shift-p` and use the `Debug:` commands or just hit `F5`.
+
+Note for convenience I have included configurations to launch:
+
+1. Azure Functions and Debug them
+2. Launch Server Side Next.js Debugging
+3. Launch Client Side Next.js Debugging
+
+For a full debugging experience with debuggers listening on the correct ports you will want to run `yarn dev` then each debug config in order! 🔍🐛🏏
 
 ## Gotchas to look out for
 
