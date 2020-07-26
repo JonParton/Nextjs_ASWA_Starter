@@ -55,7 +55,7 @@ function Project({ project, path }) {
           </NextLink>
           <Alert severity="info">
             Each one of these pages has been pre-rendered at Build time during
-            the CI Deploy
+            the CI Deploy. Notice the clean URL for this page too!
           </Alert>
           <Grid container direction="row" spacing={3}>
             <Grid item container xs={12} justify="center">

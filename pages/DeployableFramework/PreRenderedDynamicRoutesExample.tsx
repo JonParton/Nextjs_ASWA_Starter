@@ -1,4 +1,3 @@
-import SmallCard from '../../components/SmallCard'
 import { projectIcons } from '../../components/Icons'
 
 import { projects } from '../../utils/projectsData'
@@ -9,11 +8,10 @@ import {
   Typography,
   Card,
   CardActionArea,
-  CardMedia,
   CardContent,
-  CardActions,
   Button,
   Box,
+  Link,
 } from '@material-ui/core'
 import NextLink from 'next/link'
 import ArrowBackIcon from '@material-ui/icons/ArrowBack'
@@ -60,16 +58,18 @@ function PreRenderedDynamicRoutesExample() {
           </Typography>
           <Typography variant="body1" color="textPrimary" paragraph>
             If you have a Dynamic route like the one in this example (
-            `/DynamicRoute/<strong>[Path]</strong>` ) you can tell Next.js to
-            pre render all the possible routes at build time using `next export`
-            and these are the pages that will be served up by the Azure Static
-            Web App.
+            `/DynamicRoute/<strong>[Path]</strong>` ) you can tell{' '}
+            <Link href="https://nextjs.org/">Next.js</Link> to pre render all
+            the possible routes at build time using `next export` and these are
+            the pages that will be served up by the Azure Static Web App.
           </Typography>
           <Typography variant="body1" color="textPrimary" paragraph>
-            To give you an example of this I continued the idea from the
-            Microsoft Documentation and Below we have told the server to
-            Pre-Render a route/page for each of the frameworks you can publish
-            to Azure Static Web Apps.
+            To give you an example of this I continued the idea from{' '}
+            <Link href="https://docs.microsoft.com/en-us/azure/static-web-apps/deploy-nextjs">
+              the Microsoft Documentation
+            </Link>{' '}
+            and Below we have told the server to Pre-Render a route/page for
+            each of the frameworks you can publish to Azure Static Web Apps.
           </Typography>
           <Alert severity="info" elevation={2} style={{ marginBottom: '20px' }}>
             Note that because each page is pre-rendered during the CI
