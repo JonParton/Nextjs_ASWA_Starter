@@ -6,9 +6,9 @@
     "dev": "cross-env NODE_OPTIONS='--inspect' next",
     "build": "next build && next export",
     "start": "next start",
-    "lint": "eslint",
-    "format": "prettier --write \"{utils,pages,state,components,api,styles}/**/*.{ts,tsx,css,js,jsx,md}\" \"*.md\"",
-    "checkFormat": "prettier --check \"{utils,pages,state,components,api,styles}/**/*.{ts,tsx,css,js,jsx,md}\" \"*.md\""
+    "lint": "eslint  \"{utils,pages,state,components,api,styles,models}/**/*.{ts,tsx,css,js,jsx,md}\" \"*.md\"",
+    "format": "prettier --write \"{utils,pages,state,components,api,styles,models}/**/*.{ts,tsx,css,js,jsx,md}\" \"*.md\"",
+    "checkFormat": "prettier --check \"{utils,pages,state,components,api,styles,models}/**/*.{ts,tsx,css,js,jsx,md}\" \"*.md\""
   },
   "dependencies": {
     "@material-ui/core": "^4.11.0",
