@@ -38,7 +38,7 @@ As this is a template / starter it's not meant to be cloned but instead it is be
 - Create a blank repository in github, either public or private and copy the git URL given.
 
 - Using a terminal in your projects folder (Powershell, CMD etc) do a git clone:
-  - *I find Git plays nicer if you do a clone rather then committing to a blank repo from the command line. It allows the setup from Github to be downloaded ensuring things like creating new branches and pushing them is painless!*
+  - _I find Git plays nicer if you do a clone rather then committing to a blank repo from the command line. It allows the setup from Github to be downloaded ensuring things like creating new branches and pushing them is painless!_
 
 ```git
 git clone YOUR_REPO_URL_HERE
@@ -49,9 +49,9 @@ git clone YOUR_REPO_URL_HERE
 - Push this,newly populated Repo to GitHub with a suitable git comment such as `Initial Commit of Next.js ASWAs starter`
 - Using the [Azure Static Web App Extension](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-azurestaticwebapps) login to Azure and GitHub then click to create a new Azure Static Web App.Work through the guided steps making sure you use the following as answers for the specified questions:
 
-| Root Folder   | API Location  | App Artifact Location           |
-| ---  | --- | --- |
-| `/`           | `api`         | `out`                           |
+| Root Folder | API Location | App Artifact Location |
+| ----------- | ------------ | --------------------- |
+| `/`         | `api`        | `out`                 |
 
 - Azure will then push a .github folder to your GitHub repository so make sure you do a `git pull`.
 - Once this is done you should have a .github folder with the Github Workflow that will automate all of our deployments to Azure 🔥🔥🏃‍♂️🏃‍♂️.
@@ -80,22 +80,22 @@ Make sure that when ever you want to call an azure function API that you work ou
 an example:
 
 ```js
-    const apiURL = `${process.env.NEXT_PUBLIC_API}/PersonManual`;
+const apiURL = `${process.env.NEXT_PUBLIC_API}/PersonManual`
 
-    setErrorMessage("");
+setErrorMessage('')
 
-    const res = await fetch(`${apiURL}?name=${name}`).catch((error) => {
-      setErrorMessage(
-        "We got an error trying to call the get person manual API ... Are the Azure Functions running?"
-      );
-    });
+const res = await fetch(`${apiURL}?name=${name}`).catch((error) => {
+  setErrorMessage(
+    'We got an error trying to call the get person manual API ... Are the Azure Functions running?',
+  )
+})
 
-    // Other code!
+// Other code!
 ```
 
 ### Getting CORS to work locally
 
-By default React will not be able to use Fetch on the Local azure functions as they are on a completely different port (Effectively site). You need to tell the Azure Functions to allow CORS when in development. To do this add the below to ``local.settings.json`` of within the api Folder.
+By default React will not be able to use Fetch on the Local azure functions as they are on a completely different port (Effectively site). You need to tell the Azure Functions to allow CORS when in development. To do this add the below to `local.settings.json` of within the api Folder.
 
 `api\local.settings.json`
 
@@ -124,27 +124,30 @@ However if you do want to do these dynamic routes and pre render them you need t
 ```js
 // Page Code ^^
 
-export async function getStaticProps({params}) {
-
-  const projectsData = require("../../utils/projectsData")
-  const projectData = projectsData.projects.find(project => project.slug === params.path);
-  const ghPath = projectData.path;
+export async function getStaticProps({ params }) {
+  const projectsData = require('../../utils/projectsData')
+  const projectData = projectsData.projects.find(
+    (project) => project.slug === params.path,
+  )
+  const ghPath = projectData.path
   const path = params.path
-  
-  const res = await fetch(`https://api.github.com/repos/${ghPath}`);
-  const project = await res.json();
-  return { props: {project, path} };
-};
+
+  const res = await fetch(`https://api.github.com/repos/${ghPath}`)
+  const project = await res.json()
+  return { props: { project, path } }
+}
 
 // This function gets called at build time
 export async function getStaticPaths() {
   // Get hold of the list of all possible Dynamic Routes we want to render.
   // This could be a file in code (as below) or an external API (Not one of
   // this projects Azure Functions)
-  const projectsData = require("../../utils/projectsData")
+  const projectsData = require('../../utils/projectsData')
 
   // Get the paths we want to pre-render from the data returned.
-  const paths = projectsData.projects.map((project) => ({params: { path: project.slug}}))
+  const paths = projectsData.projects.map((project) => ({
+    params: { path: project.slug },
+  }))
 
   // We'll pre-render only these paths at build time.
   // { fallback: false } means other routes should 404.
@@ -152,8 +155,7 @@ export async function getStaticPaths() {
   return { paths, fallback: false }
 }
 
-export default Project;
-
+export default Project
 ```
 
 One thing to note with this is that, unfortunately, you can't call out to an API you have defined as an Azure Function in this project within these methods. These pre-rendered pages are created at Build Time on Github and I don't believe it spins up the azure functions during this build and besides they may not be set up in the pipeline environment with things like databases you have defined! You can however call to external API's and also read the files in the repo. So for things like Blogs or some data you are managing in the Repo you can still do this like the above!
@@ -174,14 +176,13 @@ This is caused by a conflict between the original styles generated on the Server
 
 //inside the default MyApp component
 
-  React.useEffect(() => {
-    // Remove the server-side injected CSS.
-    const jssStyles = document.querySelector('#jss-server-side');
-    if (jssStyles) {
-      jssStyles.parentElement.removeChild(jssStyles);
-    }
-  }, []);
-
+React.useEffect(() => {
+  // Remove the server-side injected CSS.
+  const jssStyles = document.querySelector('#jss-server-side')
+  if (jssStyles) {
+    jssStyles.parentElement.removeChild(jssStyles)
+  }
+}, [])
 ```
 
 ```tsx
@@ -214,23 +215,25 @@ MyDocument.getInitialProps = async (ctx) => {
   // 4. page.render
 
   // Render app and page and get the context of the page with collected side effects.
-  const sheets = new ServerStyleSheets();
-  const originalRenderPage = ctx.renderPage;
+  const sheets = new ServerStyleSheets()
+  const originalRenderPage = ctx.renderPage
 
   ctx.renderPage = () =>
     originalRenderPage({
       enhanceApp: (App) => (props) => sheets.collect(<App {...props} />),
-    });
+    })
 
-  const initialProps = await Document.getInitialProps(ctx);
+  const initialProps = await Document.getInitialProps(ctx)
 
   return {
     ...initialProps,
     // Styles fragment is rendered after the app and page rendering finish.
-    styles: [...React.Children.toArray(initialProps.styles), sheets.getStyleElement()],
-  };
-};
-
+    styles: [
+      ...React.Children.toArray(initialProps.styles),
+      sheets.getStyleElement(),
+    ],
+  }
+}
 ```
 
 Thank you to [this post](https://stackoverflow.com/questions/50685175/react-material-ui-warning-prop-classname-did-not-match) for putting me on to the answer of this one!
