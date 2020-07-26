@@ -21,11 +21,11 @@ const useStyles = makeStyles((theme) => ({
     textTransform: 'none',
   },
   tooltip: {
-    fontSize: '20px',
+    fontSize: theme.typography.fontSize * 1.2,
   },
 }))
 
-export default function ButtonAppBar() {
+export const NavBar: React.FunctionComponent = () => {
   const classes = useStyles()
 
   return (
@@ -66,3 +66,5 @@ export default function ButtonAppBar() {
     </div>
   )
 }
+
+export default NavBar

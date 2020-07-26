@@ -20,6 +20,8 @@ import NextLink from 'next/link'
 import Alert from '@material-ui/lab/Alert'
 import { useSetRecoilState } from 'recoil'
 import { currentPageTitleState } from '../../state/atoms'
+import { GetStaticProps, GetStaticPaths } from 'next'
+import { GithubRepo } from '../../models/GitHubRepo'
 
 const useStyles = makeStyles((theme) => ({
   paperMain: {
@@ -27,7 +29,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-function Project({ project, path }) {
+type ProjectProps = {
+  project: GithubRepo
+  path: string
+}
+
+const Project: React.FunctionComponent<ProjectProps> = ({ project, path }) => {
   const projectData = projects.find((project) => project.slug === path)
   const Icon = projectIcons[projectData.id]
   const classes = useStyles()
@@ -146,11 +153,8 @@ function Project({ project, path }) {
   )
 }
 
-export async function getStaticProps({ params }) {
-  const projectsData = require('../../utils/projectsData')
-  const projectData = projectsData.projects.find(
-    (project) => project.slug === params.path,
-  )
+export const getStaticProps: GetStaticProps = async ({ params }) => {
+  const projectData = projects.find((project) => project.slug === params.path)
   const ghPath = projectData.path
   const path = params.path
 
@@ -160,14 +164,13 @@ export async function getStaticProps({ params }) {
 }
 
 // This function gets called at build time
-export async function getStaticPaths() {
+export const getStaticPaths: GetStaticPaths = async () => {
   // Get hold of the list of all possible Dynamic Routes we want to render.
   // This could be a file in code (as below) or an external API (Not one of
   // this projects Azure Functions)
-  const projectsData = require('../../utils/projectsData')
 
   // Get the paths we want to pre-render the data returned.
-  const paths = projectsData.projects.map((project) => ({
+  const paths = projects.map((project) => ({
     params: { path: project.slug },
   }))
 

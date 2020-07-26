@@ -3,7 +3,6 @@ import {
   Grid,
   Typography,
   Button,
-  Paper,
   makeStyles,
   Card,
   CardContent,
@@ -20,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
   },
   pos: {
-    marginBottom: 12,
+    marginBottom: theme.spacing(2),
   },
   flexGrow: {
     flexGrow: 1,
@@ -30,13 +29,21 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-export default function IndexCard({
+type IndexCardPropTypes = {
+  title: string
+  subTitle: string
+  description: string
+  exampleLink: string
+  imageURL: string
+}
+
+export const IndexCard: React.FunctionComponent<IndexCardPropTypes> = ({
   title,
   subTitle,
   description,
   exampleLink,
   imageURL,
-}) {
+}) => {
   const classes = useStyles()
   return (
     <Grid item sm={12} md={4}>
@@ -68,3 +75,5 @@ export default function IndexCard({
     </Grid>
   )
 }
+
+export default IndexCard

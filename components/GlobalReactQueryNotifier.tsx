@@ -1,7 +1,7 @@
 import { useIsFetching } from 'react-query'
 import { useSnackbar } from 'notistack'
 
-export function GlobalReactQueryNotifier() {
+export const GlobalReactQueryNotifier: React.FunctionComponent = () => {
   const isFetching = useIsFetching()
   const { enqueueSnackbar } = useSnackbar()
 

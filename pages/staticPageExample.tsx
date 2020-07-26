@@ -1,15 +1,8 @@
-import {
-  Grid,
-  Typography,
-  Paper,
-  Container,
-  Box,
-  Button,
-} from '@material-ui/core'
+import { Grid, Typography, Paper, Box, Button } from '@material-ui/core'
 import ArrowBackIcon from '@material-ui/icons/ArrowBack'
 import NextLink from 'next/link'
 
-const staticPageExample = () => (
+const staticPageExample: React.FunctionComponent = () => (
   // Note styles are added here using the Main.css instead of using Javascript styling. This is just to give an example of doing this!
   // In reality I would still  probably use makestyles but if you are importing some static html likely all the styles are already in
   // a .css file.

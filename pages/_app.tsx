@@ -5,6 +5,7 @@ import { CssBaseline, Grid as Box, makeStyles } from '@material-ui/core'
 import NavBar from '../components/NavBar'
 import { SnackbarProvider } from 'notistack'
 import Head from 'next/head'
+import { AppProps } from 'next/app'
 import { currentFullPageTitleState } from '../state/atoms'
 
 const useStyles = makeStyles((theme) => ({
@@ -32,7 +33,10 @@ function CustomHeadTitle() {
 }
 
 // This default export is required in a new `pages/_app.js` file.
-export default function MyApp({ Component, pageProps }) {
+export const MyApp: React.FunctionComponent<AppProps> = ({
+  Component,
+  pageProps,
+}) => {
   const classes = useStyles()
 
   React.useEffect(() => {
@@ -64,3 +68,5 @@ export default function MyApp({ Component, pageProps }) {
     </RecoilRoot>
   )
 }
+
+export default MyApp

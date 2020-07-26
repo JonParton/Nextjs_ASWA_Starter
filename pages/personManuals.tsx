@@ -35,19 +35,6 @@ import { useSnackbar } from 'notistack'
 import { ReactQueryDevtools } from 'react-query-devtools'
 import { ReactQueryStatusLabel } from '../components/ReactQueryStatusLabel'
 
-export interface PersonManualAPIReturn {
-  numberOfRecords: number
-  manuals: Manual[]
-}
-
-export interface Manual {
-  id: string
-  name: string
-  description: string
-  answerToTheMeaningOfLife: string
-  AvatarURL: string
-}
-
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
@@ -126,7 +113,7 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 )
 
-function personManuals() {
+export const personManuals: React.FunctionComponent = () => {
   const classes = useStyles()
   const router = useRouter()
   const { enqueueSnackbar } = useSnackbar()
@@ -196,11 +183,9 @@ function personManuals() {
       </ListItem>
     )
   } else {
-    const personManualsAPIReturn: PersonManualAPIReturn =
-      PersonManualsQuery.data
     if (
-      personManualsAPIReturn !== undefined &&
-      personManualsAPIReturn.numberOfRecords > 0
+      PersonManualsQuery.data !== undefined &&
+      PersonManualsQuery.data.numberOfRecords > 0
     ) {
       ManualsItems = (
         <React.Fragment>
@@ -221,7 +206,7 @@ function personManuals() {
           >
             Clear Selection
           </Button>
-          {personManualsAPIReturn.manuals.map((manual) => {
+          {PersonManualsQuery.data.manuals.map((manual) => {
             return (
               <React.Fragment key={manual.id}>
                 <ListItem
@@ -433,7 +418,7 @@ function personManuals() {
             }}
             queryKey={['manual', currentManualName]}
           />
-          {personManualQuery.data.manuals.map((manual: Manual) => {
+          {personManualQuery.data.manuals.map((manual) => {
             return (
               <Card
                 className={classes.manualCardRoot}

@@ -1,6 +1,11 @@
 import React from 'react'
 
-export function ReactIcon({ w, h }) {
+export type IconProps = {
+  w: React.ReactText
+  h: React.ReactText
+}
+
+export const ReactIcon: React.FunctionComponent<IconProps> = ({ w, h }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -29,7 +34,7 @@ export function ReactIcon({ w, h }) {
   )
 }
 
-export function VueIcon({ w, h }) {
+export const VueIcon: React.FunctionComponent<IconProps> = ({ w, h }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -61,7 +66,7 @@ export function VueIcon({ w, h }) {
   )
 }
 
-export function SvelteIcon({ w, h }) {
+export const SvelteIcon: React.FunctionComponent<IconProps> = ({ w, h }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -81,7 +86,7 @@ export function SvelteIcon({ w, h }) {
   )
 }
 
-export function NextIcon({ w, h }) {
+export const NextIcon: React.FunctionComponent<IconProps> = ({ w, h }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -105,7 +110,7 @@ export function NextIcon({ w, h }) {
   )
 }
 
-export function NuxtIcon({ w, h }) {
+export const NuxtIcon: React.FunctionComponent<IconProps> = ({ w, h }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -130,7 +135,7 @@ export function NuxtIcon({ w, h }) {
   )
 }
 
-export function GatsbyIcon({ w, h }) {
+export const GatsbyIcon: React.FunctionComponent<IconProps> = ({ w, h }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -147,7 +152,7 @@ export function GatsbyIcon({ w, h }) {
   )
 }
 
-export function StarIcon({ w, h }) {
+export const StarIcon: React.FunctionComponent<IconProps> = ({ w, h }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -171,7 +176,7 @@ export function StarIcon({ w, h }) {
   )
 }
 
-export function WatchIcon({ w, h }) {
+export const WatchIcon: React.FunctionComponent<IconProps> = ({ w, h }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -192,7 +197,7 @@ export function WatchIcon({ w, h }) {
   )
 }
 
-export function BugIcon({ w, h }) {
+export const BugIcon: React.FunctionComponent<IconProps> = ({ w, h }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -209,7 +214,7 @@ export function BugIcon({ w, h }) {
   )
 }
 
-export function AzureIcon() {
+export const AzureIcon: React.FunctionComponent = () => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -226,7 +231,7 @@ export function AzureIcon() {
   )
 }
 
-export function GithubIcon() {
+export const GithubIcon: React.FunctionComponent = () => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

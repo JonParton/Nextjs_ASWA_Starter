@@ -1,15 +1,29 @@
-import { useQueryCache } from 'react-query'
-import { CircularProgress, Chip, Tooltip, makeStyles } from '@material-ui/core'
+import { useQueryCache, QueryKeyOrPredicateFn } from 'react-query'
+import {
+  CircularProgress,
+  Chip,
+  Tooltip,
+  makeStyles,
+  ChipProps,
+} from '@material-ui/core'
 import DoneIcon from '@material-ui/icons/Done'
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline'
 
 const useStyles = makeStyles((theme) => ({
   tooltip: {
-    fontSize: '1em',
+    fontSize: theme.typography.fontSize,
   },
 }))
 
-export function ReactQueryStatusLabel(props) {
+type ReactQueryStatusLabelProps = {
+  queryKey: QueryKeyOrPredicateFn
+}
+
+type extendedChipProps = ChipProps & ReactQueryStatusLabelProps
+
+export const ReactQueryStatusLabel: React.FunctionComponent<extendedChipProps> = (
+  props,
+) => {
   const { queryKey, ...other } = props
   const queryCache = useQueryCache()
   const query = queryCache.getQuery(queryKey)

@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-function Home() {
+const Home: React.FunctionComponent = () => {
   const classes = useStyles()
   const setCurrentPageTitle = useSetRecoilState(currentPageTitleState)
 

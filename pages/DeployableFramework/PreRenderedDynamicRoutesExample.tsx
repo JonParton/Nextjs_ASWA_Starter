@@ -18,6 +18,7 @@ import ArrowBackIcon from '@material-ui/icons/ArrowBack'
 import Alert from '@material-ui/lab/Alert'
 import { useSetRecoilState } from 'recoil'
 import { currentPageTitleState } from '../../state/atoms'
+import React from 'react'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -31,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-function PreRenderedDynamicRoutesExample() {
+const PreRenderedDynamicRoutesExample: React.FunctionComponent = () => {
   const classes = useStyles()
   const setCurrentPageTitle = useSetRecoilState(currentPageTitleState)
 
