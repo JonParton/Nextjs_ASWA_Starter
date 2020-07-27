@@ -4,7 +4,7 @@
 
 This Repository is connected to the Example App at the following URL. (CI/CD!)
 
-[https://salmon-mushroom-0b9a38203-6.westeurope.azurestaticapps.net/](https://salmon-mushroom-0b9a38203-6.westeurope.azurestaticapps.net/)
+[https://lively-hill-02d5c7203.azurestaticapps.net](https://lively-hill-02d5c7203.azurestaticapps.net)
 
 Take a look around or read on to see what this starter is all about and how to get cooking 👩‍🍳🔥🍳.
 
