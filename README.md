@@ -2,15 +2,17 @@
 
 ## The Example App
 
-This Repository is connected to the Example App at the following URL (CI/CD!).
+This Repository is connected (CI/CD!) to the Example App at the URL below.
 
 [https://NextjsASWAExample.co.uk/](https://NextjsASWAExample.co.uk/)
+
+_Of course this is hosted on an Azure Static Web App!_
 
 Take a look around or read on to see what this starter is all about and how to get cooking 👩‍🍳🔥🍳.
 
 ## It's reason for being
 
-This starter template / example was created based on the following [Microsoft Documentation](https://docs.microsoft.com/en-us/azure/static-web-apps/deploy-nextjs). At the time of writing the Microsoft Docs had a few issues I wanted to address before sharing it to others.
+This starter template / example was created based on the [Microsoft Documentation](https://docs.microsoft.com/en-us/azure/static-web-apps/deploy-nextjs). At the time of writing the Microsoft Docs had a few issues I wanted to address before sharing it to others.
 
 - It doesn't give an example of using Azure Functions as a back end API.
   - From doing this previously I knew there were a few **GOTCHA's** in getting these set up. So I wanted to solve them and put that knowledge into this starter.
@@ -22,9 +24,9 @@ This starter template / example was created based on the following [Microsoft Do
 I then got a bit carried away, partly for my learning/curiosity, and added in other extras that should help you be more productive! ... Although it has made this starter much more opinionated! 📣🤷‍♂️
 
 - I wanted to switch the code across to use Typescript so we could make use of the better static error catching! (Strict mode not currently enabled...I'm building up to it! 😨)
-- I added [Material UI](https://material-ui.com/) to style the Example Web Page and [fixed a few issues](#Material-UI-Hot-Reloading-when-using-makeStyles) related to using MUI with Next.js. If you use this as a starter for your own project I strongly suggest taking a good look at the ease of use, aesthetics and practicality of Material UI!
+- I added [Material UI](https://material-ui.com/) to style the Example Web Page and [fixed a few issues](#Material-UI-Hot-Reloading-when-using-makeStyles) related to using MUI with Next.js. If you use this as a starter for your own project I strongly suggest taking a good look at the ease of use, aesthetics and practicality of Material UI! (Quick thank you to the great [undraw community](https://undraw.co/) for images used in the example too!)
 - I added 2 state handlers for the application; I subscribe to the idea that [Application state and Server state should be treated differently](https://www.youtube.com/watch?v=seU46c6Jz7E). New kid on the block [Recoil.js](https://recoiljs.org/) is used for Application State (IE synchronous state solely dictated by the user / application!) and [React-Query](https://react-query.tanstack.com/docs) is utilised to manage the interface with our remote Server State (IE state related to data that is almost always asynchronous and that we don't solely control! (other users, background tasks etc)). These two can then work nicely together to keep our application in sync while avoiding reams of boiler plate code (👍👌). More details on this and my thinking behind it can be found in the [readme in the state folder](/state/README.md) 📁 as well as being seen in action on the CSR page of the Example App.
-- Added an easy way to set the page title from anywhere in the code flow of your application (In a component, in an if flow, on a page etc) See `currentPageTitleState`
+- Added an easy way to set the page title from anywhere in the code flow of your application (In a component, in an if flow, on a page etc) See `currentPageTitleState`.
 - Set up VS code to debug and made the various `package.json` scripts play nice with each other.
 - I also added and configured some opinionated use of ESLint and Prettier to make cleaning up our code mess easier.
 - As a last addition I have also added a set of recommended VSCode extensions. Feel free to follow (🐏🐑) or ignore!
@@ -35,14 +37,14 @@ With all of those things added this starter should allow you to get started with
 
 I'm only at the start of my React / Next.js journey so I'm sure there are loads of things that could be improved here, especially how I have done some of the react pages! Please raise issues, a pull request or drop me a note to suggest improvements here - I won't be offended!
 
-If you do contribute to this repository be sure to add your "Manual" / "Profile" to the CSR Example. The avatars are Bitmoji's and the data is stored in a JSON file in the API folder. Submit as part of your PR!
+If you do contribute to this repository be sure to add your "Manual" / "Profile" to the [CSR Example Page](https://NextjsASWAexample.co.uk/CSRExample). The avatars are [Bitmoji's](https://www.bitmoji.com/) and the data is stored in a JSON file in the API folder. Submit as part of your PR!
 
 ## A few notes on Azure Static Web Apps
 
 Azure Static Web Apps are Microsoft's new service to host Static Web applications with the minimal of fuss (Automagical CI/CD, SSL Certificate by default, zero effort hosting). It works with a plethora of frameworks (As displayed in the [Dynamic Route Prerendering](https://NextjsASWAExample.co.uk/DeployableFramework/PreRenderedDynamicRoutesExample) section of the Example App!) but as it is still in preview there are a few limitations to bear in mind.
 
 - Currently you can only register a top level custom domain to work with them, not sub domains.
-  - Also you can only one of register `xxx.co.blah` or `www.xxx.co.blah`
+  - Also you can only register one of `xxxxxx.co.blah` or `www.xxxxxx.co.blah`
 - There is an element of limited authentication that can be switched on for defined routes in the azure portal but at the moment this is limited to only 25 users. This will sorely limit it's use to be predominantly for open facing web sites. Probably by design while in preview!
 
 ## Dependencies
