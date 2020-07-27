@@ -4,13 +4,15 @@
     "name": "Jon",
     "description": "A hairy and 'unique' individual who enjoys a huge mix of activities including rock climbing, running, cycling , geeking out with code and tech as well as indulging his terribly sweet tooth!",
     "answerToTheMeaningOfLife":"Who cares just live it!",
-    "AvatarURL":"/images/avatars/JonParton_Avatar.png"
+    "AvatarURL":"/images/avatars/JonParton_Avatar.png",
+    "whatsOneBugBear":"People taking credit for other peoples work without saying thanks and mentioning them!"
   },
   {
     "id": "2",
     "name": "Anna",
     "description": "A lovely and capable lady who has a few cat like tendencies, a big brain and an insatiable desire to read!",
     "answerToTheMeaningOfLife":"42!",
-    "AvatarURL":"/images/avatars/AnnaWylie_Avatar.jpeg"
+    "AvatarURL":"/images/avatars/AnnaWylie_Avatar.jpeg",
+    "whatsOneBugBear":"I don't know?!"
   }
 ]
