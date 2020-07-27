@@ -34,17 +34,18 @@ export const ReactQueryStatusLabel: React.FunctionComponent<extendedChipProps> =
 
   if (query.state.isFetching) {
     if (query.state.status === 'loading') {
-      labelText = `Initial fetch of Data. ${
+      labelText = `${
         query.state.failureCount > 0
-          ? `Failed... Retry # ${query.state.failureCount}`
+          ? `Failed... Retry # ${query.state.failureCount} - `
           : ''
-      }`
+      }
+      Initial fetch of Data.`
     } else {
-      labelText = `Data Refreshed at ${lastUpdated.toLocaleTimeString()}, Refreshing Data Now! ${
+      labelText = `${
         query.state.failureCount > 0
-          ? `Failed... Retry # ${query.state.failureCount}`
+          ? `Failed... Retry # ${query.state.failureCount} - `
           : ''
-      }`
+      }Data Refreshed at ${lastUpdated.toLocaleTimeString()}, Refreshing Data Now!`
     }
   } else if (query.state.status === 'error') {
     const error: Error = query.state.error as Error
