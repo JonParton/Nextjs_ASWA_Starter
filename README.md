@@ -2,7 +2,7 @@
 
 ## The Example App
 
-This Repository is connected to the Example App at the following URL. (CI/CD!)
+This Repository is connected to the Example App at the following URL (CI/CD!).
 
 [https://NextjsASWAExample.co.uk/](https://NextjsASWAExample.co.uk/)
 
