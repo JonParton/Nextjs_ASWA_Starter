@@ -45,7 +45,7 @@ export const NavBar: React.FunctionComponent = () => {
             classes={{ tooltip: classes.tooltip }}
           >
             <Link
-              href="https://github.com/JonParton/Nextjs_ASWS_Starter"
+              href="https://github.com/JonParton/Nextjs_ASWA_Starter"
               color="inherit"
             >
               <Button

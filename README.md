@@ -4,7 +4,7 @@
 
 This Repository is connected to the Example App at the following URL. (CI/CD!)
 
-[https://salmon-mushroom-0b9a38203-6.westeurope.azurestaticapps.net/](https://salmon-mushroom-0b9a38203-6.westeurope.azurestaticapps.net/)
+[https://NextjsASWAExample.co.uk/](https://NextjsASWAExample.co.uk/)
 
 Take a look around or read on to see what this starter is all about and how to get cooking 👩‍🍳🔥🍳.
 
@@ -39,10 +39,11 @@ If you do contribute to this repository be sure to add your "Manual" / "Profile"
 
 ## A few notes on Azure Static Web Apps
 
-Azure Static Web Apps are Microsoft's new service to host Static Web applications with the minimal of fuss. It works with a plethora of frameworks (As displayed in the Dynamic Route Prerendering section of the Example App!) but as it is still in preview there are a few limitations to bear in mind.
+Azure Static Web Apps are Microsoft's new service to host Static Web applications with the minimal of fuss (Automagical CI/CD, SSL Certificate by default, zero effort hosting). It works with a plethora of frameworks (As displayed in the [Dynamic Route Prerendering](https://NextjsASWAExample.co.uk/DeployableFramework/PreRenderedDynamicRoutesExample) section of the Example App!) but as it is still in preview there are a few limitations to bear in mind.
 
 - Currently you can only register a top level custom domain to work with them, not sub domains.
-- There is an element of limited authentication that can be switched on for set routes in the azure portal but at the moment this is limited to only 25 users. This will sorely limit it's use to be predominantly for open facing web sites. Probably by design while in preview!
+  - Also you can only one of register `xxx.co.blah` or `www.xxx.co.blah`
+- There is an element of limited authentication that can be switched on for defined routes in the azure portal but at the moment this is limited to only 25 users. This will sorely limit it's use to be predominantly for open facing web sites. Probably by design while in preview!
 
 ## Dependencies
 
