@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 import {
   Grid,
   makeStyles,
@@ -7,33 +7,27 @@ import {
   Typography,
   Paper,
   Box,
-  Avatar,
-  Divider,
   Hidden,
   Button,
   SwipeableDrawer,
-  List,
-  ListItem,
-  ListItemAvatar,
-  ListItemText,
-  Card,
-  CardContent,
-  CardMedia,
   Link,
 } from '@material-ui/core'
-import { Skeleton, Alert } from '@material-ui/lab'
+import { Alert } from '@material-ui/lab'
 import ArrowBackIcon from '@material-ui/icons/ArrowBack'
-import BackspaceIcon from '@material-ui/icons/Backspace'
 import ListIcon from '@material-ui/icons/List'
 import NextLink from 'next/link'
 import React from 'react'
 import { useRouter } from 'next/router'
-import { currentManualNameState, currentPageTitleState } from '../state/atoms'
+import {
+  currentManualNameState,
+  currentPageTitleState,
+  mobileMenuOpenState,
+} from '../state/atoms'
 import { useRecoilState, useSetRecoilState } from 'recoil'
-import { usePersonManuals, usePersonManual } from '../state/ReactQueryHooks'
-import { useSnackbar } from 'notistack'
 import { ReactQueryDevtools } from 'react-query-devtools'
 import { ReactQueryStatusLabel } from '../components/ReactQueryStatusLabel'
+import ManualDisplay from '../components/ManualDisplay'
+import ManualsList from '../components/ManualsList'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -57,9 +51,6 @@ const useStyles = makeStyles((theme: Theme) =>
       padding: theme.spacing(3),
       overflowY: 'auto',
     },
-    ManualsList: {
-      width: '250px',
-    },
     MainManual: {
       padding: theme.spacing(3),
       width: '100%',
@@ -74,29 +65,6 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     MobileSideBar: {
       padding: theme.spacing(3),
-    },
-    errorStyle: {
-      color: 'red',
-      fontWeight: 'bold',
-    },
-    manualCardRoot: {
-      maxWidth: '500px',
-      width: '100%',
-      display: 'flex',
-      flexDirection: 'column',
-      alignContent: 'center',
-      alignSelf: 'center',
-    },
-    cardMedia: {
-      height: 300,
-      width: 300,
-      alignSelf: 'center',
-    },
-    alertRoot: {
-      width: '100%',
-      '& > * + *': {
-        marginTop: theme.spacing(2),
-      },
     },
     imageBanner: {
       display: 'flex',
@@ -116,9 +84,11 @@ const useStyles = makeStyles((theme: Theme) =>
 export const CSRExample: React.FunctionComponent = () => {
   const classes = useStyles()
   const router = useRouter()
-  const { enqueueSnackbar } = useSnackbar()
   const [currentManualName, setCurrentManualName] = useRecoilState(
     currentManualNameState,
+  )
+  const [mobileMenuOpen, setMobileMenuOpen] = useRecoilState(
+    mobileMenuOpenState,
   )
   const setCurrentPageTitle = useSetRecoilState(currentPageTitleState)
 
@@ -132,11 +102,6 @@ export const CSRExample: React.FunctionComponent = () => {
     }
   }, [router])
 
-  // React-Queries (Server Sate!)
-  const PersonManualsQuery = usePersonManuals()
-
-  // Set up React Hooks
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const toggleDrawer = (open: boolean) => (
     event: React.KeyboardEvent | React.MouseEvent,
   ) => {
@@ -148,314 +113,8 @@ export const CSRExample: React.FunctionComponent = () => {
     ) {
       return
     }
-
     setMobileMenuOpen(open)
   }
-
-  let ManualsItems
-  if (PersonManualsQuery.isLoading) {
-    ManualsItems = (
-      <React.Fragment>
-        {[1, 2, 3, 4, 5, 6].map((i) => {
-          return (
-            <ListItem key={i}>
-              <ListItemAvatar>
-                <Skeleton
-                  height="30px"
-                  width="30px"
-                  variant="circle"
-                ></Skeleton>
-              </ListItemAvatar>
-              <ListItemText>
-                <Skeleton height="30px" />
-              </ListItemText>
-              <Divider light />
-            </ListItem>
-          )
-        })}
-      </React.Fragment>
-    )
-  } else if (PersonManualsQuery.isError) {
-    ManualsItems = (
-      <ListItem key="Error">
-        We got an Error from the API. The error was{' '}
-        {PersonManualsQuery.error.message}
-      </ListItem>
-    )
-  } else {
-    if (
-      PersonManualsQuery.data !== undefined &&
-      PersonManualsQuery.data.numberOfRecords > 0
-    ) {
-      ManualsItems = (
-        <React.Fragment>
-          <Typography key="title" variant="h5" color="primary" gutterBottom>
-            Available Manuals:
-          </Typography>
-          <Button
-            variant="contained"
-            color="primary"
-            startIcon={<BackspaceIcon />}
-            onClick={() => {
-              router.push(`/CSRExample`, undefined, { shallow: true })
-              enqueueSnackbar('Returned to explanation', { variant: 'info' })
-              setMobileMenuOpen(false)
-            }}
-            disabled={currentManualName.length == 0 ? true : false}
-            style={{ marginBottom: '10px' }}
-          >
-            Clear Selection
-          </Button>
-          {PersonManualsQuery.data.manuals.map((manual) => {
-            return (
-              <React.Fragment key={manual.id}>
-                <ListItem
-                  button
-                  component="a"
-                  href="#"
-                  onClick={() => {
-                    router.push(
-                      `/CSRExample?manual=${manual.name}`,
-                      undefined,
-                      { shallow: true },
-                    )
-                    setMobileMenuOpen(false)
-                  }}
-                  selected={manual.name == currentManualName ? true : false}
-                  divider
-                >
-                  <ListItemAvatar>
-                    <Avatar src={manual.AvatarURL} />
-                  </ListItemAvatar>
-                  <ListItemText primary={manual.name} />
-                </ListItem>
-              </React.Fragment>
-            )
-          })}
-        </React.Fragment>
-      )
-    } else {
-      ManualsItems = (
-        <React.Fragment>
-          <ListItem>No Manuals from the API...</ListItem>
-        </React.Fragment>
-      )
-    }
-  }
-
-  const personManualQuery = usePersonManual(currentManualName)
-
-  // Work out what we should display in the Manual Card.
-  let CardReturn: JSX.Element
-  if (currentManualName.length == 0) {
-    setCurrentPageTitle(`CSR Example`)
-    CardReturn = (
-      <Box>
-        <Typography variant="h4" gutterBottom>
-          Server Rendered Frame, Client Rendered Content
-        </Typography>
-
-        <Box className={classes.imageBanner}>
-          <img src="/images/undraw_next_js_8g5m.png" />
-          <Typography variant="h2" color="primary">
-            &
-          </Typography>
-          <img src="/images/undraw_react_y7wq.png" />
-        </Box>
-
-        <Typography variant="body1" paragraph>
-          This page is an example of a pre rendered static frame (Thanks{' '}
-          <Link href="https://nextjs.org/">Next.js!</Link> 👍⚡) but then Client
-          Side Rendered content (Cheers{' '}
-          <Link href="https://reactjs.org/">React</Link> and Azure Functions!
-          🍻🍻). This is ideal when you need to be able to display up to the
-          second dynamic content from the server, based on user input. The other
-          use of this interaction with Azure Functions is if you need to do
-          something server side such as send an email or edit persistent data in
-          something like a database.
-        </Typography>
-
-        <Typography variant="body1" paragraph>
-          In this example we are also showing the handling of State. We&apos;ve
-          decided to split this into two types, Client state (Global) and Sever
-          State (Data). To highlight how this is being handled you will see some
-          little data tags to show some of the nifty features of our server
-          state handler,{' '}
-          <Link href="https://react-query.tanstack.com/docs/videos">
-            React-Query
-          </Link>
-          , such as caching results then refreshing them when needed, refreshing
-          data when refocusing on the browser tab after having been away for a
-          while (😴😴) and automatic query retrying. For client state we are
-          using recoil that is also pretty damn neat (Find out all about{' '}
-          <Link href="https://recoiljs.org/">
-            recoil and it&apos;s Atoms here!
-          </Link>{' '}
-          ⚛⚛). With these two together we can avoid the need for something more
-          boilerplate intensive such as{' '}
-          <Link href="https://redux.js.org/">redux</Link> and{' '}
-          <Link href="https://github.com/reduxjs/redux-thunk">thunk</Link>
-        </Typography>
-
-        <Alert severity="warning" style={{ marginBottom: '20px' }}>
-          Note that we have purposely slowed down the Azure Function API&apos;s
-          for this example with a 2 second sleep. AF&apos;s are normally
-          lightening quick! ⚡⚡
-        </Alert>
-
-        <Typography variant="body1" paragraph>
-          We&apos;ve also included a notification handler in the form of{' '}
-          <Link href="https://github.com/iamhosseindhv/notistack">
-            NotiStack
-          </Link>{' '}
-          so you can, for example, notify users on the completion of those async
-          tasks you have been firing off to azure functions! In this case
-          we&apos;ve just shoe horned it into the example when you clear the
-          selection but it gives you the idea!
-        </Typography>
-
-        <Typography variant="body1" paragraph>
-          To see all this in action select a Person Manual from the menu. ↖↖
-        </Typography>
-      </Box>
-    )
-  } else if (personManualQuery.isLoading) {
-    setCurrentPageTitle(`${currentManualName}'s Manual`)
-    CardReturn = (
-      // <Skeleton component="div" width="100%" height="100%"></Skeleton>
-      <Box
-        width="100%"
-        justifyContent="center"
-        alignContent="flex-start"
-        display="flex"
-        flexDirection="column"
-      >
-        <ReactQueryStatusLabel
-          style={{
-            width: 'fit-content',
-            alignSelf: 'center',
-            marginBottom: '10px',
-          }}
-          queryKey={['manual', currentManualName]}
-        />
-        <Card
-          className={classes.manualCardRoot}
-          variant="outlined"
-          elevation={8}
-        >
-          <Box
-            width="100%"
-            justifyContent="center"
-            display="flex"
-            paddingTop="28px"
-          >
-            <Skeleton height={200} width={200} variant="circle"></Skeleton>
-          </Box>
-          <CardContent>
-            <Typography variant="h5" component="h2">
-              <Skeleton width={80} />
-            </Typography>
-            <Typography color="textSecondary">
-              <Skeleton width={160} />
-            </Typography>
-            <Typography variant="body2" component="p">
-              <Skeleton width={'100%'} />
-              <Skeleton width={'100%'} />
-              <Skeleton width={'60%'} />
-            </Typography>
-          </CardContent>
-        </Card>
-      </Box>
-    )
-  } else if (personManualQuery.isError) {
-    setCurrentPageTitle(`Error`)
-    CardReturn = (
-      <Box>
-        <ReactQueryStatusLabel
-          style={{
-            width: 'fit-content',
-            alignSelf: 'center',
-            marginBottom: '10px',
-          }}
-          queryKey={['manual', currentManualName]}
-        />
-        <Typography variant="h4" className={classes.errorStyle} gutterBottom>
-          Error:
-        </Typography>
-        <Typography variant="body1" paragraph>
-          {personManualQuery.error.message}
-        </Typography>
-        <Typography variant="body1" paragraph>
-          If this is happening locally, did you start the azure functions?
-        </Typography>
-      </Box>
-    )
-  } else if (
-    personManualQuery.data !== undefined &&
-    personManualQuery.data.numberOfRecords == 1
-  ) {
-    setCurrentPageTitle(`${currentManualName}'s Manual`)
-    CardReturn = (
-      <Box className={classes.alertRoot} display="flex" flexDirection="column">
-        <Alert severity="info">
-          In loading this manual we also did a shallow navigation to include the
-          manual name in the URL. This means the URL could be copied and shared!
-          (Deep Linking) Note: I haven&apos;t found a way to do this with clean
-          url&apos;s (IE just /[manual])
-        </Alert>
-        <Box
-          width="100%"
-          justifyContent="center"
-          alignContent="flex-start"
-          display="flex"
-          flexDirection="column"
-        >
-          <ReactQueryStatusLabel
-            style={{
-              width: 'fit-content',
-              alignSelf: 'center',
-              marginBottom: '10px',
-            }}
-            queryKey={['manual', currentManualName]}
-          />
-          {personManualQuery.data.manuals.map((manual) => {
-            return (
-              <Card
-                className={classes.manualCardRoot}
-                variant="outlined"
-                elevation={8}
-                key={manual.id}
-              >
-                <CardMedia
-                  className={classes.cardMedia}
-                  image={manual.AvatarURL}
-                  title={`${manual.name}'s Avatar`}
-                />
-                <CardContent>
-                  <Typography variant="h5" component="h2">
-                    {manual.name}
-                  </Typography>
-                  <Typography color="textSecondary" paragraph>
-                    Answer to the meaning of life:{' '}
-                    {manual.answerToTheMeaningOfLife}
-                  </Typography>
-                  <Typography variant="body2" component="p">
-                    {manual.description}
-                  </Typography>
-                </CardContent>
-              </Card>
-            )
-          })}
-        </Box>
-      </Box>
-    )
-  } else {
-    CardReturn = <div>Please Select a manual on the left hand side.</div>
-  }
-
-  const ManualsList = () => (
-    <List className={classes.ManualsList}>{ManualsItems}</List>
-  )
 
   const BackButton = () => (
     <NextLink href="/" passHref>
@@ -482,6 +141,84 @@ export const CSRExample: React.FunctionComponent = () => {
     >
       Select Manual
     </Button>
+  )
+
+  const MainContent = () => {
+    if (currentManualName.length == 0) {
+      setCurrentPageTitle(`CSR Example`)
+      return <CSRExampleText />
+    } else {
+      return <ManualDisplay />
+    }
+  }
+
+  const CSRExampleText = () => (
+    <Box>
+      <Typography variant="h4" gutterBottom>
+        Server Rendered Frame, Client Rendered Content
+      </Typography>
+
+      <Box className={classes.imageBanner}>
+        <img src="/images/undraw_next_js_8g5m.png" />
+        <Typography variant="h2" color="primary">
+          &
+        </Typography>
+        <img src="/images/undraw_react_y7wq.png" />
+      </Box>
+
+      <Typography variant="body1" paragraph>
+        This page is an example of a pre rendered static frame (Thanks{' '}
+        <Link href="https://nextjs.org/">Next.js!</Link> 👍⚡) but then Client
+        Side Rendered content (Cheers{' '}
+        <Link href="https://reactjs.org/">React</Link> and Azure Functions!
+        🍻🍻). This is ideal when you need to be able to display up to the
+        second dynamic content from the server, based on user input. The other
+        use of this interaction with Azure Functions is if you need to do
+        something server side such as send an email or edit persistent data in
+        something like a database.
+      </Typography>
+
+      <Typography variant="body1" paragraph>
+        In this example we are also showing the handling of State. We&apos;ve
+        decided to split this into two types, Client state (Global) and Sever
+        State (Data). To highlight how this is being handled you will see some
+        little data tags to show some of the nifty features of our server state
+        handler,{' '}
+        <Link href="https://react-query.tanstack.com/docs/videos">
+          React-Query
+        </Link>
+        , such as caching results then refreshing them when needed, refreshing
+        data when refocusing on the browser tab after having been away for a
+        while (😴😴) and automatic query retrying. For client state we are using
+        recoil that is also pretty damn neat (Find out all about{' '}
+        <Link href="https://recoiljs.org/">
+          recoil and it&apos;s Atoms here!
+        </Link>{' '}
+        ⚛⚛). With these two together we can avoid the need for something more
+        boilerplate intensive such as{' '}
+        <Link href="https://redux.js.org/">redux</Link> and{' '}
+        <Link href="https://github.com/reduxjs/redux-thunk">thunk</Link>
+      </Typography>
+
+      <Alert severity="warning" style={{ marginBottom: '20px' }}>
+        Note that we have purposely slowed down the Azure Function API&apos;s
+        for this example with a 2 second sleep. AF&apos;s are normally
+        lightening quick! ⚡⚡
+      </Alert>
+
+      <Typography variant="body1" paragraph>
+        We&apos;ve also included a notification handler in the form of{' '}
+        <Link href="https://github.com/iamhosseindhv/notistack">NotiStack</Link>{' '}
+        so you can, for example, notify users on the completion of those async
+        tasks you have been firing off to azure functions! In this case
+        we&apos;ve just shoe horned it into the example when you clear the
+        selection but it gives you the idea!
+      </Typography>
+
+      <Typography variant="body1" paragraph>
+        To see all this in action select a Person Manual from the menu. ↖↖
+      </Typography>
+    </Box>
   )
 
   // Return the whole page setup.
@@ -566,7 +303,7 @@ export const CSRExample: React.FunctionComponent = () => {
               display="flex"
               alignItems="flex-start"
             >
-              {CardReturn}
+              <MainContent />
             </Box>
           </Paper>
         </Grid>
@@ -577,7 +314,7 @@ export const CSRExample: React.FunctionComponent = () => {
   )
 }
 
-// // This is just a bit of example code used to test if the NEXT_PUBLIC_API
+// // This is a bit of example code used to test if the NEXT_PUBLIC_API
 // // environment variable can be seen both on server and client side.
 // export async function getStaticProps() {
 //   // Do our server side code

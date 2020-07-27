@@ -6,6 +6,11 @@ export const currentManualNameState = atom({
   default: '',
 })
 
+export const mobileMenuOpenState = atom({
+  key: 'mobileMenuOpenState',
+  default: false,
+})
+
 export const currentPageTitleState = atom({
   key: `currentPageTitleState`,
   default: '',
