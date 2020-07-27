@@ -33,11 +33,18 @@ export const NavBar: React.FunctionComponent = () => {
       <AppBar position="static">
         <Toolbar>
           <NextLink href="/" passHref>
-            <Button color="inherit" component="a" className={classes.title}>
-              <Typography variant="h6" className={classes.title}>
-                Next.js ASWA&apos;s Example
-              </Typography>
-            </Button>
+            <Tooltip
+              title="Next.js Azure Static Web Apps (ASWA's) Example"
+              aria-label="Next.js Azure Static Web Apps (ASWA's) Example"
+              classes={{ tooltip: classes.tooltip }}
+              placement="bottom-start"
+            >
+              <Button color="inherit" component="a" className={classes.title}>
+                <Typography variant="h6" className={classes.title}>
+                  Next.js ASWA&apos;s Example
+                </Typography>
+              </Button>
+            </Tooltip>
           </NextLink>
           <Tooltip
             title="See the code on GitHub"
