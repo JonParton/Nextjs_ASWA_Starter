@@ -4,5 +4,12 @@
     "azureFunctions.projectLanguage": "TypeScript",
     "azureFunctions.projectRuntime": "~2",
     "debug.internalConsoleOptions": "neverOpen",
-    "azureFunctions.preDeployTask": "npm prune"
+    "azureFunctions.preDeployTask": "npm prune",
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true,
+    "cSpell.words": [
+        "ASWA",
+        "apos",
+        "js's"
+    ]
 }

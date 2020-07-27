@@ -1,5 +1,13 @@
 {
   "recommendations": [
-    "ms-azuretools.vscode-azurefunctions"
+    "ms-azuretools.vscode-azurefunctions",
+    "dbaeumer.vscode-eslint",
+    "CoenraadS.bracket-pair-colorizer-2",
+    "esbenp.prettier-vscode",
+    "wix.vscode-import-cost",
+    "VisualStudioExptTeam.vscodeintellicode",
+    "vscode-icons-team.vscode-icons",
+    "ms-azuretools.vscode-azurestaticwebapps",
+    "msjsdiag.debugger-for-chrome"
   ]
 }

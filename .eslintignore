@@ -1,0 +1,5 @@
+# ignoreArtifacts
+dist
+out
+build
+node_modules

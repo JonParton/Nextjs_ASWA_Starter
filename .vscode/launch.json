@@ -1,12 +1,34 @@
 {
-    "version": "0.2.0",
-    "configurations": [
-        {
-            "name": "Attach to Node Functions",
-            "type": "node",
-            "request": "attach",
-            "port": 9229,
-            "preLaunchTask": "func: host start"
-        }
-    ]
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "1. Launch Functions",
+      "type": "node",
+      "request": "attach",
+      "port": 9300,
+      "preLaunchTask": "func: host start"
+    },
+    {
+      "name": "2. Launch Next ServerSide (Make sure you have run yarn dev in a terminal first!)",
+      "type": "node",
+      "request": "attach",
+      "skipFiles": ["<node_internals>/**"],
+      "port": 9229,
+    },
+    {
+      "name": "3. Launch Next Client Side",
+      "type": "chrome",
+      "request": "launch",
+      "url": "http://localhost:3000",
+      "webRoot": "${workspaceFolder}"
+    }
+  ]
+  // For some odd reason I can't get a composite start of these to work!
+  //,
+  // "compounds": [
+  //   {
+  //     "name": "Debug Azure Functions, Next.js (Client Side)",
+  //     "configurations": ["Launch Functions", "Launch Next Client Side"]
+  //   }
+  // ]
 }
