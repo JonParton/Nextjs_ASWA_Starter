@@ -80,8 +80,24 @@ git clone YOUR_REPO_URL_HERE
 | ----------- | ------------ | --------------------- |
 | `/`         | `api`        | `out`                 |
 
+**Note** - If the above questions are not asked then VS Code may have added some extra keys to your `.vscode/settings.json`. If so make sure these are set as below after you have done a Git Pull (Next step!):
+
+```json
+    "staticWebApps.appSubpath": "/",
+    "staticWebApps.apiSubpath": "api",
+    "staticWebApps.outputSubpath": "out"
+```
+
 - Azure will then push a .github folder to your GitHub repository so make sure you do a `git pull`.
 - Once this is done you should have a .github folder with the Github Workflow that will automate all of our deployments to Azure 🔥🔥🏃‍♂️🏃‍♂️.
+- Before you continue here check that the rigth setting have been set up in your Worflow file `.github\workflow\azure-static-web-apps-<YOUR_AZURE_WEB_APP_AUTO_GENERATED_ALIAS>`
+
+```yaml
+  app_location: "/" # App source code path
+  api_location: "api" # Api source code path - optional
+  output_location: "out" # Built app content directory - optional
+```
+
 - Replace the README.md file with your own.
 - Check you have the `local.settings.json` file in your API folder to fix CORS locally ([**GOTCHA** explained below](#getting-cors-to-work-locally)). All being well (🤞) if you downloaded this from the Release section this will already be included, However it is listed in the gitignore so just double check.
 
