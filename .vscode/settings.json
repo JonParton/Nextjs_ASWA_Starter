@@ -11,5 +11,8 @@
         "ASWA",
         "apos",
         "js's"
-    ]
+    ],
+    "staticWebApps.appSubpath": "/",
+    "staticWebApps.apiSubpath": "api",
+    "staticWebApps.outputSubpath": "out"
 }
