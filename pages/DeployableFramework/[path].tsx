@@ -65,6 +65,10 @@ const Project: React.FunctionComponent<ProjectProps> = ({ project, path }) => {
             the CI Deploy. Notice the clean URL for this page too!
           </Alert>
           <Grid container direction="row" spacing={3}>
+            <Grid item container xs={12} justify="center" />
+            <Grid item container xs={12} justify="center">
+              <Typography variant="h2">{project.full_name}</Typography>
+            </Grid>
             <Grid item container xs={12} justify="center">
               <Icon w={249} h={278} />
             </Grid>
