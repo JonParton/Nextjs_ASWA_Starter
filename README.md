@@ -6,7 +6,7 @@ This Repository is connected (CI/CD!) to the Example App at the URL below.
 
 [https://NextjsASWAExample.co.uk/](https://NextjsASWAExample.co.uk/)
 
-_Of course this is hosted on an Azure Static Web App!_
+_Of course this itself is hosted on an Azure Static Web App!_
 
 Take a look around or read on to see what this starter is all about and how to get cooking 👩‍🍳🔥🍳.
 
@@ -41,11 +41,10 @@ If you do contribute to this repository be sure to add your "Manual" / "Profile"
 
 ## A few notes on Azure Static Web Apps
 
-Azure Static Web Apps are Microsoft's new service to host Static Web applications with the minimal of fuss (Automagical CI/CD, SSL Certificate by default, zero effort hosting). It works with a plethora of frameworks (As displayed in the [Dynamic Route Prerendering](https://NextjsASWAExample.co.uk/DeployableFramework/PreRenderedDynamicRoutesExample) section of the Example App!) but as it is still in preview there are a few limitations to bear in mind.
+Azure Static Web Apps are Microsoft's new service to host Static Web applications with the minimal of fuss (Automagical CI/CD, SSL Certificate by default, zero effort hosting). It works with a plethora of frameworks (As displayed in the [Dynamic Route Prerendering](https://NextjsASWAExample.co.uk/DeployableFramework/PreRenderedDynamicRoutesExample) section of the Example App!). Azure static Web Apps went GA in May 2021 and still offers a generous free tier. 
 
-- Currently you can only register a top level custom domain to work with them, not sub domains.
-  - Also you can only register one of `xxxxxx.co.blah` or `www.xxxxxx.co.blah`
-- There is an element of limited authentication that can be switched on for defined routes in the azure portal but at the moment this is limited to only 25 users. This will sorely limit it's use to be predominantly for open facing web sites. Probably by design while in preview!
+- Since GA you can now natively map both `www.xxxx.co.uk` and the root URL `xxxx.co.uk` to your azure static web app by [using an Alias](https://docs.microsoft.com/en-gb/azure/static-web-apps/custom-domain?tabs=azure-dns)
+- There is also Azure AD Authentication that can be used with the app for Defined Routes but this is only available in the standard tier. 
 
 ## Dependencies
 
