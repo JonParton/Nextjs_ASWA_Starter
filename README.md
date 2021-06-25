@@ -4,7 +4,7 @@
 
 This Repository is connected (CI/CD!) to the Example App at the URL below.
 
-[https://NextjsASWAExample.co.uk/](https://NextjsASWAExample.co.uk/)
+[https://NextjsASWAExample.co.uk/](https://icy-ocean-03bdd7c10.azurestaticapps.net/) (Link changed to the Azure generated one Temporarily while DNS changes take effect)
 
 _Of course this itself is hosted on an Azure Static Web App!_
 
